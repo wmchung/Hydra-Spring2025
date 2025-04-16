@@ -1,0 +1,1 @@
+puzzleId~puzzleQuestion~puzzleAnswer~puzzlePassMsg~puzzleFailMsg~puzzleAttempts
