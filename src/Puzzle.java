@@ -1,80 +1,74 @@
 public class Puzzle {
-    private String puzzleArea;
-    private int puzzleId;
-    private String puzzleQuestion;
-    private String puzzleAnswer;
-    private String puzzlePassMsg;
-    private String puzzleFailMsg;
-    private int puzzleAttempts;
-    private boolean puzzleSolved;
+    private String area;
+    private String puzzleId;
+    private String puzzleRoomId;
+    private String description;
+    private String solution;
+    private String completionMessage;
+    private String failureMessage;
+    private String requiredItem; //tbd
+    private int damageOnFailure; //tbd
+    private int attempts;
 
-    public Puzzle(String puzzleArea, int puzzleId, String puzzleQuestion, String puzzleAnswer, String puzzlePassMsg, String puzzleFailMsg,
-                  int PuzzleAttempts) {
-        this.puzzleArea = puzzleArea;
+    public Puzzle(String area, String puzzleId, String puzzleRoomId, String description, String solution,
+                  String completionMessage, String failureMessage, String requiredItem, int damageOnFailure, int attempts) {
+        this.area = area;
         this.puzzleId = puzzleId;
-        this.puzzleQuestion = puzzleQuestion;
-        this.puzzleAnswer = puzzleAnswer;
-        this.puzzlePassMsg = puzzlePassMsg;
-        this.puzzleFailMsg = puzzleFailMsg;
-        this.puzzleAttempts = PuzzleAttempts;
-        this.puzzleSolved = false;
+        this.puzzleRoomId = puzzleRoomId;
+        this.description = description;
+        this.solution = solution;
+        this.completionMessage = completionMessage;
+        this.failureMessage = failureMessage;
+        this.requiredItem = requiredItem;
+        this.damageOnFailure = damageOnFailure;
+        this.attempts = attempts;
     }
 
-    public String getPuzzleArea() {return puzzleArea;}
-
-    public void setPuzzleArea(String puzzleArea) {this.puzzleArea = puzzleArea; }
-
-    public int getPuzzleId() {return puzzleId; }
-
-    public void setPuzzleId(int puzzleId) {
-        this.puzzleId = puzzleId;
+    public String getArea() {
+        return area;
     }
 
-    public String getPuzzleQuestion() {
-        return puzzleQuestion;
+    public String getPuzzleId() {
+        return puzzleId;
     }
 
-    public void setPuzzleQuestion(String puzzleQuestion) {
-        this.puzzleQuestion = puzzleQuestion;
+    public String getPuzzleRoomId() {
+        return puzzleRoomId;
     }
 
-    public String getPuzzleAnswer() {
-        return puzzleAnswer;
+    public String getDescription() {
+        return description;
     }
 
-    public void setPuzzleAnswer(String puzzleAnswer) {
-        this.puzzleAnswer = puzzleAnswer;
+    public String getCompletionMessage() {
+        return completionMessage;
     }
 
-    public String getPuzzlePassMsg() {
-        return puzzlePassMsg;
+    public String getFailureMessage() {
+        return failureMessage;
     }
 
-    public void setPuzzlePassMsg(String puzzlePassMsg) {
-        this.puzzlePassMsg = puzzlePassMsg;
+    public String getRequiredItem() {
+        return requiredItem;
     }
 
-    public String getPuzzleFailMsg() {
-        return puzzleFailMsg;
+    public int getDamageOnFailure() {
+        return damageOnFailure;
     }
 
-    public void setPuzzleFailMsg(String puzzleFailMsg) {
-        this.puzzleFailMsg = puzzleFailMsg;
+    public boolean checkSolution(String input) {
+        return input.equalsIgnoreCase(solution);
     }
 
-    public int getPuzzleAttempts() {
-        return puzzleAttempts;
+    public boolean requiresItem() {
+        return requiredItem != null && !requiredItem.isEmpty();
     }
 
-    public void setPuzzleAttempts(int puzzleAttempts) {
-        this.puzzleAttempts = puzzleAttempts;
+    public int getAttempts() {
+        return attempts;
     }
 
-    public boolean isPuzzleSolved() {
-        return puzzleSolved;
-    }
-
-    public void setPuzzleSolved(boolean puzzleSolved) {
-        this.puzzleSolved = puzzleSolved;
+    public void setAttempts(int attempts) {
+        this.attempts = attempts;
     }
 }
