@@ -87,24 +87,16 @@ public class GameMap {
             while (input.hasNext()) {
                 line = input.nextLine().trim();
                 if(!line.isEmpty()) {
-                    String[] parts = line.split("~", 6);
-                    int puzzleId = Integer.parseInt(parts[0]);
-                    String puzzleQuestion = parts[1];
-                    String puzzleAnswer = parts[2];
-                    String puzzlePassMsg = parts[3];
-                    String puzzleFailMsg = parts[4];
-                    int puzzleAttempts = Integer.parseInt(parts[5]);
+                    String[] parts = line.split("~", 7);
+                    String puzzleArea = parts[0];
+                    int puzzleId = Integer.parseInt(parts[1]);
+                    String puzzleQuestion = parts[2];
+                    String puzzleAnswer = parts[3];
+                    String puzzlePassMsg = parts[4];
+                    String puzzleFailMsg = parts[5];
+                    int puzzleAttempts = Integer.parseInt(parts[6]);
 
-                    Puzzle puzzle = new Puzzle(puzzleId, puzzleQuestion, puzzleAnswer, puzzlePassMsg, puzzleFailMsg,
-                            puzzleAttempts);
-
-                    puzzle.setPuzzleId(puzzleId);
-                    puzzle.setPuzzleQuestion(puzzleQuestion);
-                    puzzle.setPuzzleAnswer(puzzleAnswer);
-                    puzzle.setPuzzlePassMsg(puzzlePassMsg);
-                    puzzle.setPuzzleFailMsg(puzzleFailMsg);
-                    puzzle.setPuzzleAttempts(puzzleAttempts);
-
+                    Puzzle puzzle = new Puzzle(puzzleArea, puzzleId, puzzleQuestion, puzzleAnswer, puzzlePassMsg, puzzleFailMsg, puzzleAttempts);
                     puzzles.add(puzzle);
                 }
             }
