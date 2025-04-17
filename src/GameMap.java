@@ -69,12 +69,12 @@ public class GameMap {
                             int itemDMG = Integer.parseInt(parts[3]);
                             Weapon weapon = new Weapon(itemName, itemDescription, itemDMG);
                             items.add(weapon);
-                        } else if (itemType.equalsIgnoreCase("Healing")) {
+                        } else if (tag.equalsIgnoreCase("Healing")) {
                             int itemHP = Integer.parseInt(parts[3]);
                             Consumable consumable = new Consumable(itemName, itemDescription, itemHP);
                             items.add(consumable);
                         }
-                    }
+                    } //end if p4
                 }
             }
         }
@@ -88,16 +88,20 @@ public class GameMap {
             while (input.hasNext()) {
                 line = input.nextLine().trim();
                 if(!line.isEmpty()) {
-                    String[] parts = line.split("~", 7);
-                    String puzzleArea = parts[0];
-                    int puzzleId = Integer.parseInt(parts[1]);
-                    String puzzleQuestion = parts[2];
-                    String puzzleAnswer = parts[3];
-                    String puzzlePassMsg = parts[4];
-                    String puzzleFailMsg = parts[5];
-                    int puzzleAttempts = Integer.parseInt(parts[6]);
+                    String[] parts = line.split("~", 10);
+                    String puzArea = parts[0];
+                    String puzId = parts[1];
+                    String puzRoomId = parts[2];
+                    String puzDesc = parts[3];
+                    String puzSol = parts[4];
+                    String puzPassMsg = parts[5];
+                    String puzFailMsg = parts[6];
+                    String puzReqItem = parts[7];
+                    int puzDmgOnfail = Integer.parseInt(parts[8]);
+                    int puzAttempts = Integer.parseInt(parts[9]);
 
-                    Puzzle puzzle = new Puzzle(puzzleArea, puzzleId, puzzleQuestion, puzzleAnswer, puzzlePassMsg, puzzleFailMsg, puzzleAttempts);
+                    Puzzle puzzle = new Puzzle(puzArea, puzId, puzRoomId, puzDesc, puzSol, puzPassMsg, puzFailMsg, puzReqItem,
+                            puzDmgOnfail, puzAttempts);
                     puzzles.add(puzzle);
                 }
             }
