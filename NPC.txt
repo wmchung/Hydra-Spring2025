@@ -1,0 +1,5 @@
+npcID~description~region~interaction
+FNPC1~Explorer extraordinaire Indianapolis Johnson~Desert~A stranger hears the players’ call for help. He notices the player struggling with the puzzle and gives a hint.
+FNPC2~Eclectic billionaire Melon Husk~Island~(Summoned with the Signal Mirror) The exploration mogul sees the glint from the mirror as he’s flying into space on one of his rockets and dispatches a robot to give a hint on the region puzzle.
+FNPC3~Sentient Scarlet Macaw~Rainforest~The bird hears the players’ cry for assistance on the puzzle and swoops in with a hint (or a reminder that the vine grappler is needed).
+FNPC4~Anthropomorphic Reindeer~Tundra~The reindeer hears the players’ request for assistance and comes to assist by dropping a hint on the puzzle.
