@@ -14,12 +14,14 @@ public class GameMap {
     private ArrayList<Items> items;
     private ArrayList<Puzzle> puzzles;
     private ArrayList<Character> characters;
+    private ArrayList<NPC> npcs;
 
     public GameMap() {
         rooms = new ArrayList<>();
         items = new ArrayList<>();
         puzzles = new ArrayList<>();
         characters = new ArrayList<>();
+        npcs = new ArrayList<>();
     }
 
     //method to load item, puzzle, and rooms files
@@ -135,6 +137,26 @@ public class GameMap {
         }
     } //end loadMonsters
 
+    //method to load characters from file
+    public void loadNPC(String file) throws FileNotFoundException{
+        String line;
+        try (Scanner input = new Scanner(new File(file))) {
+            input.nextLine();
+            while (input.hasNext()) {
+                line = input.nextLine().trim();
+                if (!line.isEmpty()) {
+                    String[] parts = line.split("~", 4);
+                    String npcId = parts[0];
+                    String npcDesc = parts[1];
+                    String npcReg = parts[2];
+                    String npcInteract = parts[3];
+
+                    NPC npc = new NPC(npcId, npcDesc, npcReg, npcInteract);
+                }
+            }
+        }
+    } //end loadNPC
+
     //method to parse room data
     private Room parseRoom(String line) throws IllegalArgumentException {
         String[] parts = line.split("~", 7);
@@ -166,8 +188,8 @@ public class GameMap {
             String[] roomItems = parts[4].split("~");
             for (String itemName : roomItems) {
                 if (!itemName.isEmpty()) {
-                    for (Item item : items) {
-                        if (item.getName().equals(itemName)) {
+                    for (Items item : items) {
+                        if (item.getItemName().equalsIgnoreCase(itemName)) {
                             room.addItem(item);
                             //System.out.println("Item added to room " + itemName); //debug statement
                             break;
@@ -181,9 +203,8 @@ public class GameMap {
             String[] roomPuzzles = parts[5].split("~");
             for (String puzzId : roomPuzzles) {
                 if (!puzzId.isEmpty()) {
-                    int puzzleId = Integer.parseInt(puzzId);
                     for (Puzzle puzzle : puzzles) {
-                        if (puzzle.getPuzzleId() == puzzleId) {
+                        if (puzzle.getPuzzleId().equalsIgnoreCase(puzzId)) {
                             room.addPuzzle(puzzle);
                             //System.out.println("Puzzle added to room " + puzzId); //debug statement
                             break;
