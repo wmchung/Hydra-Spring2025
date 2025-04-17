@@ -6,13 +6,13 @@ public class Room {
     private int roomId;
     private String name;
     private String description;
-    private Monster monster;
+    private Enemy enemy;
     private boolean visted;
     private Map<String, Integer> exits;
     private Map<String, Item> items = new HashMap<>();//Item Name and description
     private Puzzle puzzle;
 
-    public Room(String name, int roomId, String description) {
+    public Room(int roomId, String name, String description) {
         this.roomId=roomId;
         this.type=type;
         this.name=name;
@@ -92,12 +92,13 @@ public class Room {
 
     }
 
-    public Monster getMonster() {
-        return monster;
+    public Enemy getEnemy() {
+
+        return enemy;
     }
     //Setter
-    public void setMonster(Monster monster) {
-        this.monster = monster;
+    public void setMonster(Enemy enemy) {
+        this.enemy = enemy;
     }
 
 }

@@ -4,49 +4,47 @@ import java.util.Map;
 import java.util.Random;
 
 //Instance variables and attributes
-public class Player {
-    private String name;
+public class Player extends Character {
     private Room currentRoom;
-    private List<Item> inventory = new ArrayList<>();
-    private int baseAttack;
-    private int currentHP;
+    private List<Item> inventory;
     private int maxHP;
     private Item equippedItem;
 
     //constructor to initialize player with a name and starting room
-    public Player(String name, Room startingroom) {
-        this.name = name;
-        this.currentRoom = startingroom;
-        this.baseAttack = 10;
-        this.currentHP = 100;
-        this.maxHP = 100;
+    public Player(String name, int health, int attackPower, Room startingRoom) {
+      super(name, health, attackPower);
+        Room startingroom;
+        this.currentRoom = startingRoom;
+        this.maxHP = health;
         this.inventory = new ArrayList<>();
     }
 
     //Getters
 
-    public String getName() {
-        return name;
-    }
 
     public Room getCurrentRoom() {
+
         return currentRoom;
     }
 
     public List<Item> getInventory() {
+
         return inventory;
     }
 
     public Item getEquippedItem() {
+
         return equippedItem;
     }
 
     public int getCurrentHP() {
-        return currentHP;
+
+        return health;
     }
 
+    @Override
     public int getAttackPower() {
-        return (equippedItem != null) ? baseAttack + equippedItem.getAttackBoost() : baseAttack;
+        return (equippedItem != null) ? attackPower + equippedItem.getAttackBoost() : attackPower;
     }
 
     public int getEffectiveAttackPower() {
@@ -61,6 +59,7 @@ public class Player {
 
     //Setter to change players current room
     public void setCurrentRoom(Room newRoom) {
+
         this.currentRoom = newRoom;
     }
 
@@ -110,9 +109,11 @@ public class Player {
     //Method to drop item
 
     public void dropItem(String itemName) {
-        for(Item item : inventory){
+        Iterator<Item> iterator = inventory.iterator();
+        while (iterator.hasNext()) {
+            Item item = iterator.next();
             if(item.getName().equalsIgnoreCase(itemName)){
-                inventory.remove(item);
+                iterator.remove();
                 currentRoom.addItem(item);
                 System.out.println(itemName + " has been dropped from inventory");
                 return;
@@ -133,13 +134,13 @@ public class Player {
             }
         }
     }
-
+@Override
     public void takeDamage(int amount) {
-        currentHP -= amount;
-        if (currentHP < 0) {
-            currentHP = 0;
+        health -= amount;
+        if (health < 0) {
+            health = 0;
         }
-        System.out.println("You were hit and lost " + amount + " HP! Current HP: " + currentHP);
+        System.out.println("You were hit and lost " + amount + " HP! Current HP: " + health);
     }
 
 
@@ -163,7 +164,6 @@ public class Player {
             System.out.println(equippedItem.getName() + " has been unequipped");
             equippedItem.setEquipped(false);
             equippedItem = null;
-            System.out.println();
         } else {
             System.out.println("No item is currently equipped");
         }
