@@ -10,23 +10,23 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class GameMap {
-    //private ArrayList<Room> rooms;
-    //private ArrayList<Item> items;
+    private ArrayList<Room> rooms;
+    private ArrayList<Items> items;
     private ArrayList<Puzzle> puzzles;
-   // private ArrayList<Enemy> enemies;
+    private ArrayList<Character> characters;
 
     public GameMap() {
-        //rooms = new ArrayList<>();
-       //items = new ArrayList<>();
+        rooms = new ArrayList<>();
+        items = new ArrayList<>();
         puzzles = new ArrayList<>();
-        //enemies = new ArrayList<>();
+        characters = new ArrayList<>();
     }
 
     //method to load item, puzzle, and rooms files
-    public void loadGameData(String itemsFile, String puzzlesFile, String monstersFile, String roomsFile) throws FileNotFoundException {
+    public void loadGameData(String itemsFile, String puzzlesFile, String charactersFile, String roomsFile) throws FileNotFoundException {
         loadItems(itemsFile);
         loadPuzzles(puzzlesFile);
-        loadMonsters(monstersFile);
+        loadCharacters(charactersFile);
         loadRooms(roomsFile);
     } //end loadGameData
 
@@ -59,16 +59,17 @@ public class GameMap {
                 line = input.nextLine().trim();
                 if (!line.isEmpty()) {
                     String[] parts = line.split("~", 4);
-                    String itemName = parts[0];
-                    String itemDescription = parts[1];
+                    String itemID = parts[0];
+                    String itemName = parts[1];
+                    String itemDescription = parts[2];
 
                     if (parts.length == 4) { //assuming the file format includes type, HP, and damage
-                        String itemType = parts[2];
-                        if (itemType.equalsIgnoreCase("Weapon")) {
+                        String tag = parts[3];
+                        if (tag.equalsIgnoreCase("Weapon")) {
                             int itemDMG = Integer.parseInt(parts[3]);
                             Weapon weapon = new Weapon(itemName, itemDescription, itemDMG);
                             items.add(weapon);
-                        } else if (itemType.equalsIgnoreCase("Consumable")) {
+                        } else if (itemType.equalsIgnoreCase("Healing")) {
                             int itemHP = Integer.parseInt(parts[3]);
                             Consumable consumable = new Consumable(itemName, itemDescription, itemHP);
                             items.add(consumable);
@@ -103,8 +104,8 @@ public class GameMap {
         } //end try
     } //end loadPuzzles
 
-    //method to load monsters from file
-    public void loadMonsters(String file) throws FileNotFoundException{
+    //method to load characters from file
+    public void loadCharacters(String file) throws FileNotFoundException{
         String line;
         try (Scanner input = new Scanner(new File(file))) {
             input.nextLine();
