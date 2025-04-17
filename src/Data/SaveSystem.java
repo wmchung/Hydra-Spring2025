@@ -1,9 +1,8 @@
-/**
+package Data; /**
  * WIP
  */
 
 import java.io.*;
-import java.util.*;
 
 public class SaveSystem {
     private static final String SAVE_FILE = "savegame.txt";
