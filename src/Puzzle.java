@@ -1,4 +1,5 @@
 public class Puzzle {
+    private String puzzleArea;
     private int puzzleId;
     private String puzzleQuestion;
     private String puzzleAnswer;
@@ -7,8 +8,9 @@ public class Puzzle {
     private int puzzleAttempts;
     private boolean puzzleSolved;
 
-    public Puzzle(int puzzleId, String puzzleQuestion, String puzzleAnswer, String puzzlePassMsg, String puzzleFailMsg,
+    public Puzzle(String puzzleArea, int puzzleId, String puzzleQuestion, String puzzleAnswer, String puzzlePassMsg, String puzzleFailMsg,
                   int PuzzleAttempts) {
+        this.puzzleArea = puzzleArea;
         this.puzzleId = puzzleId;
         this.puzzleQuestion = puzzleQuestion;
         this.puzzleAnswer = puzzleAnswer;
@@ -18,9 +20,11 @@ public class Puzzle {
         this.puzzleSolved = false;
     }
 
-    public int getPuzzleId() {
-        return puzzleId;
-    }
+    public String getPuzzleArea() {return puzzleArea;}
+
+    public void setPuzzleArea(String puzzleArea) {this.puzzleArea = puzzleArea; }
+
+    public int getPuzzleId() {return puzzleId; }
 
     public void setPuzzleId(int puzzleId) {
         this.puzzleId = puzzleId;
