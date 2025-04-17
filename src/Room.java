@@ -7,9 +7,9 @@ public class Room {
     private String name;
     private String description;
     private Enemy enemy;
-    private boolean visted;
+    private boolean visited;
     private Map<String, Integer> exits;
-    private Map<String, Item> items = new HashMap<>();//Item Name and description
+    private Map<String, Items> items = new HashMap<>();//Item Name and description
     private Puzzle puzzle;
 
     public Room(int roomId, String name, String description) {
@@ -17,7 +17,7 @@ public class Room {
         this.type=type;
         this.name=name;
         this.description = description;
-        this.visted=true;
+        this.visited=true;
         this.exits=new HashMap<>();
         this.items=new HashMap<>();
     }
@@ -28,7 +28,7 @@ public class Room {
 
     // Method to mark the room as visited
     public void visit() {
-        visited = true;
+        boolean visited = true;
     }
 
     public void setPuzzle(Puzzle puzzle) {
@@ -36,7 +36,7 @@ public class Room {
     }
 
     //method to add items to inventory
-    public void addItem(Item item) {
+    public void addItem(Items item) {
         items.put(item.getName(), item);
     }
 
@@ -52,7 +52,7 @@ public class Room {
 //Getters - gets value of each variable
 
     public int getRoomId() {
-        return roomID;
+        return roomId;
     }
 
     public String getDescription() {
@@ -72,15 +72,15 @@ public class Room {
         return exits;
     }
 
-    public Item getItem(String itemName) {
+    public Items getItem(String itemName) {
         return items.get(itemName);
     }
 
     public String getItemDescription(String itemName) {
-        Item item = items.get(itemName);
+        Items item = items.get(itemName);
         return (item != null) ? item.getItemDescription() : "No description available.";
     }
-    public Map<String, Item> getItems() {
+    public Map<String, Items> getItems() {
         return items;
     }
 
