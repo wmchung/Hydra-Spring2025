@@ -10,17 +10,15 @@ public class Items {
     private String itemDescription;
 
     private String tag; //labels the item as weapon, healing, keys, or artifacts
-    private int healPoints;
-    private int damagePoints;
+
     private String location;
 
-    public Items(int itemID, String itemName, String itemDescription, String tag, int healPoints, int damagePoints, String location) {
+    public Items(int itemID, String itemName, String itemDescription, String tag, String location) {
         this.itemID = itemID;
         this.itemName = itemName;
         this.itemDescription = itemDescription;
         this.tag = tag;
-        this.healPoints = healPoints;
-        this.damagePoints = damagePoints;
+
         this.location= location;
     }
 
