@@ -14,7 +14,7 @@ public class Item {
    // private boolean equipped = false; //player attribute
     private String location; //itemRegion
     //private String name; //already have itemName
-
+//change
     public Item(String itemID, String itemName, String itemDescription, String tag, String location) {
         this.itemID = itemID;
         this.itemName = itemName;
