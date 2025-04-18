@@ -4,24 +4,22 @@
  * Support gameplay interaction: Items can boost player stats, heal damage, or require completing specific objectives.
  * Exists in various contexts: Items can be found in rooms or stored in player’s inventory, must be portable and independent
  */
-public class Items {
+public class Item {
     private int itemID;
     private String itemName;
     private String itemDescription;
-    private int healPoints;
-    private String tag;
-    private int damagePoints;
-    private boolean equipped = false;
+    //private int healPoints; //consumables attribute
+    private String tag; //itemType
+   // private int damagePoints; //weapons attribute
+   // private boolean equipped = false; //player attribute
+    private String location; //itemRegion
+    //private String name; //already have itemName
 
-    private String location;
-    private String name;
-
-    public Items(int itemID, String itemName, String itemDescription, String tag, String location) {
+    public Item(int itemID, String itemName, String itemDescription, String tag, String location) {
         this.itemID = itemID;
         this.itemName = itemName;
         this.itemDescription = itemDescription;
         this.tag = tag;
-
         this.location = location;
     }
 
@@ -45,14 +43,6 @@ public class Items {
         return tag;
     }
 
-    public int getHealPoints() {
-
-        return healPoints;
-    }
-
-    public int getDamagePoints() {
-        return damagePoints;
-    }
 
     public String getLocation() {
         return location;

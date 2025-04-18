@@ -3,7 +3,7 @@ import java.util.Map;
 
 public class Room {
     private String type;
-    private int roomId;
+    private String roomId;
     private String name;
     private String description;
     private Enemy enemy;
@@ -12,7 +12,7 @@ public class Room {
     private Map<String, Items> items = new HashMap<>();//Item Name and description
     private Puzzle puzzle;
 
-    public Room(int roomId, String name, String description) {
+    public Room(String roomId, String name, String description) {
         this.roomId=roomId;
         this.type=type;
         this.name=name;
@@ -28,7 +28,7 @@ public class Room {
 
     // Method to mark the room as visited
     public void visit() {
-        boolean visited = true;
+        boolean this.visited = true;
     }
 
     public void setPuzzle(Puzzle puzzle) {
@@ -51,7 +51,7 @@ public class Room {
     }
 //Getters - gets value of each variable
 
-    public int getRoomId() {
+    public String getRoomId() {
         return roomId;
     }
 
@@ -101,6 +101,14 @@ public class Room {
         this.enemy = enemy;
     }
 
+    //added puzzle method in room
+    public void addPuzzle(Puzzle puzzle) {
+    }
+
+    //added character method in room
+    public void addCharacters(Character character) {
+
+    }
 }
 
 

@@ -1,4 +1,4 @@
-public class BufferItem extends Items{
+public class BufferItem extends Item {
     //buffs players damage
     //buffs players health capacity
     private double enemyHitMiss;
