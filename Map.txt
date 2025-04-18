@@ -39,4 +39,3 @@ SR01~General~Starting Room~You wake up in a small, dimly lit room. The dark grey
 FP~General~Final Puzzle~You step into a vast, circular chamber illuminated by eerie blue light. The walls are covered with ancient runes, and four pedestals stand in the center, each inscribed with an elemental symbol: Water, Fire, Earth, and Air. In the center of the pedestals, a large, ornate door with intricate carvings awaits, sealed with a powerful magical barrier.~RP01, RE01, RE02~0~FP~0~0
 BR-E01~Boss Arena~Final Boss Room~You enter a large, domed coliseum. You hear splashing as you walk. Looking down, you realize it is blood.~FP~0~0~FB01~0
 
-roomID~roomArea~roomType~roomDescription~nextRoomNumber(exits)~item~puzzle~monster~npc

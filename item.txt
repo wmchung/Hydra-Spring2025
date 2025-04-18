@@ -1,0 +1,21 @@
+itemID~itemName~itemDescription~itemType~itemHP~itemDMG~itemRegion
+1~Cactus Flask~Made from the hollowed and de-spined remains of a cactus, this flask allows the player to take water with them to replenish hydration.~healing~2~0~desert
+2~Scorpion Venom Darts~Throwing darts dipped in scorpion venom. Allows the player to invenomate any desert assailant.~weapon~0~3~desert
+3~Sunstone Amulet~Absorbs the power of the sun to enhance the wearers’ vitality.~healing~5~0~all
+4~Fruit Basket~Juicy and succulent, a fruit basket is just what the doctor ordered to combat hunger and dehydration.~healing~3~0~all
+5~Vine Grappler~Shaped like a grappling hook, the vine grappler is held in one hand, secured at the wrist, and enables upward mobility in the dense jungle. This can allow the player to reach otherwise inaccessible key locations and items.~puzzleIem~0~0~rainforest
+6~Rain Catcher~Collects and purifies drinking water~Helps the wearer blend in with the environment, increases chance of survival against rainforest adversaries.~protection~rainforest
+7~Camo Cloak~Helps the wearer blend in with the environment, increases chance of survival against rainforest adversaries.~protection~0~0~rainforest
+8~Torch~An open-flame torch that provides warmth and light when equipped~puzzleItem~0~0~tundra
+9~Snowshoes~These tennis racquet shaped boards allow for greater mobility in the snow~mobility~0~0~tundra
+10~Thermal Blanket~The lightweight, glimmery silver blanket isn’t ideal for protection from the elements, but it’ll get the job done.~protection~0~0~tundra
+11~Ice Pick~Long and thin, this kitchen utensil is perfect for breaking blocks of ice… among other things~weapon~0~0~tundra
+12~Raft~Hastily constructed with questionable structural integrity, it at least allows the user to explore the waters around the island~mobility~0~0~island
+13~Fishing Rod~The fishing rod looks like it was abandoned by someone who was here before, the sun has done a number on it and it looks like it’s seen better days. In spite of that, it can still catch fish.~tool~0~0~island
+14~Fish~Glistening in the sunlight, the fish serve as another health source for the player, however, they will spoil if taken away from the island.~healing~5~0~island
+15~Signal Mirror~Small and simple mirror for reflecting light at passing planes and ships.~puzzleIem~0~0~island
+16~Shell Shield~A brittle but colorful shield made with the discarded shells of shellfish on the shore.~protection~0~0~island
+17~Soul of the Sand Key~use this key in the island puzzle~none~0~0~rainforest
+18~Soul of the Sands Key~ use this key in the desert puzzle~none~0~0~desert
+19~Spirit of the Snow Key~use this key in the tundra puzzle~none~0~0~tundra
+20~Heart of the Jungle Key~use this key in the rainforest puzzle~none~0~0~island
