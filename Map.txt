@@ -1,6 +1,4 @@
 roomID~roomArea~roomType~roomDescription~nextRoomNumber(exits)~item~puzzle~monster~npc
-
-
 IR-P01~Island~Puzzle Room~You have found yourself on a beach. Your eyes struggle to adjust to the daylight. No other path is clear, but a shipwreck comes into view.~IN01, IE01, FP, H01~~IP01~~
 IR-P02~Island~Puzzle Room~You arrive at a tranquil beach with a raft. You see an island a short distance away.~IN01, IE01~~IP02~~
 IR-E01~Island~Enemy Room~This room is dark, but you can hear the crackling of a fire. There is heavy brush around you.~IP01, SR, IP02~~~IE01~
