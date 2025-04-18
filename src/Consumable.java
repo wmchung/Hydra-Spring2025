@@ -1,4 +1,4 @@
-public class Consumable extends Items{
+public class Consumable extends Item {
     private int uses;
     private int healingPoints;
     public Consumable(int itemID, String itemName, String itemDescription, String tag, String location, int uses, int healingPoints) {

@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class GameMap {
     private ArrayList<Room> rooms;
-    private ArrayList<Items> items;
+    private ArrayList<Item> items;
     private ArrayList<Puzzle> puzzles;
     private ArrayList<Character> characters;
 
