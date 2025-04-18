@@ -8,20 +8,18 @@ public class Items {
     private int itemID;
     private String itemName;
     private String itemDescription;
-    private int healPoints;
-    private String tag;
-    private int damagePoints;
-    private boolean equipped = false;
-
-    private String location;
-    private String name;
+    //private int healPoints; //consumables attribute
+    private String tag; //itemType
+   // private int damagePoints; //weapons attribute
+   // private boolean equipped = false; //player attribute
+    private String location; //itemRegion
+    //private String name; //already have itemName
 
     public Items(int itemID, String itemName, String itemDescription, String tag, String location) {
         this.itemID = itemID;
         this.itemName = itemName;
         this.itemDescription = itemDescription;
         this.tag = tag;
-
         this.location = location;
     }
 
