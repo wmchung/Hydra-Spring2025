@@ -43,14 +43,6 @@ public class Item {
         return tag;
     }
 
-    public int getHealPoints() {
-
-        return healPoints;
-    }
-
-    public int getDamagePoints() {
-        return damagePoints;
-    }
 
     public String getLocation() {
         return location;
