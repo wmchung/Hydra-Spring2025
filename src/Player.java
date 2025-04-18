@@ -2,18 +2,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Iterator;
+
 
 //Instance variables and attributes
 public class Player extends Character {
     private Room currentRoom;
-    private List<Item> inventory;
+    private List<Items> inventory;
     private int maxHP;
-    private Item equippedItem;
+    private Items equippedItem;
 
     //constructor to initialize player with a name and starting room
     public Player(String name, int health, int attackPower, Room startingRoom) {
-      super(name, health, attackPower);
-        Room startingroom;
+        super(name, health, attackPower);
         this.currentRoom = startingRoom;
         this.maxHP = health;
         this.inventory = new ArrayList<>();
@@ -27,12 +28,12 @@ public class Player extends Character {
         return currentRoom;
     }
 
-    public List<Item> getInventory() {
+    public List<Items> getInventory() {
 
         return inventory;
     }
 
-    public Item getEquippedItem() {
+    public Items getEquippedItem() {
 
         return equippedItem;
     }
@@ -44,7 +45,8 @@ public class Player extends Character {
 
     @Override
     public int getAttackPower() {
-        return (equippedItem != null) ? attackPower + equippedItem.getAttackBoost() : attackPower;
+        int boost = (equippedItem != null) ? equippedItem.getAttackPower() : 0;
+        return attackPower + boost;
     }
 
     public int getEffectiveAttackPower() {
@@ -82,7 +84,7 @@ public class Player extends Character {
     //method to pickup item form current room
     public void pickUpItem(String itemName) {
         if (currentRoom.hasItem(itemName)) { // Prevent adding null/empty items
-            Item item = currentRoom.getItem(itemName);
+            Items item = currentRoom.getItem(itemName);
             inventory.add(item);
             currentRoom.removeItem(itemName);
             System.out.println(itemName + " was added to Inventory");
@@ -93,11 +95,11 @@ public class Player extends Character {
 
     // Method to remove an item from the player's inventory
     public void inspectItem(String itemName) {
-        for(Item item : inventory){
+        for (Items item : inventory) {
             if (item.getName().equalsIgnoreCase(itemName)) {
                 System.out.println("Item:" + item.getName());
                 System.out.println("Description:" + item.getItemDescription());
-                System.out.println("Attack Boost:" + item.getAttackBoost());
+                System.out.println("Attack Boost:" + item.getAttackPower());
 
                 return;
             }
@@ -109,10 +111,10 @@ public class Player extends Character {
     //Method to drop item
 
     public void dropItem(String itemName) {
-        Iterator<Item> iterator = inventory.iterator();
+        Iterator<Items> iterator = inventory.iterator();
         while (iterator.hasNext()) {
-            Item item = iterator.next();
-            if(item.getName().equalsIgnoreCase(itemName)){
+            Items item = iterator.next();
+            if (item.getName().equalsIgnoreCase(itemName)) {
                 iterator.remove();
                 currentRoom.addItem(item);
                 System.out.println(itemName + " has been dropped from inventory");
@@ -129,12 +131,13 @@ public class Player extends Character {
             System.out.println("Your inventory is empty.");
         } else {
             System.out.println("Inventory: ");
-            for (Item item : inventory) {
+            for (Items item : inventory) {
                 System.out.println(item.getName() + ":" + item.getItemDescription());
             }
         }
     }
-@Override
+
+    @Override
     public void takeDamage(int amount) {
         health -= amount;
         if (health < 0) {
@@ -145,22 +148,23 @@ public class Player extends Character {
 
 
     //method to equip or unequip items
-    public void equipItem(String itemName){
-        for (Item item : inventory) {
-            if (item.getName().equalsIgnoreCase(itemName) && item.getAttackBoost() > 0) {
+    public void equipItem(String itemName) {
+        for (Items item : inventory) {
+            if (item.getName().equalsIgnoreCase(itemName) && item.getAttackPower() > 0) {
                 if (equippedItem != null) {
                     equippedItem.setEquipped(false);
                 }
                 equippedItem = item;
                 item.setEquipped(true);
-                System.out.println(item.getName() + " equipped. Attack boosted by " + item.getAttackBoost());
+                System.out.println(item.getName() + " equipped. Attack boosted by " + item.getAttackPower());
                 return;
             }
         }
         System.out.println("No such weapon item found in inventory.");
     }
-    public void unEquipItem(){
-        if(equippedItem!=null) {
+
+    public void unEquipItem() {
+        if (equippedItem != null) {
             System.out.println(equippedItem.getName() + " has been unequipped");
             equippedItem.setEquipped(false);
             equippedItem = null;
@@ -168,11 +172,13 @@ public class Player extends Character {
             System.out.println("No item is currently equipped");
         }
     }
-    public void heal(String itemName){
-        for (Item item: inventory){
-            if(item.getName().equalsIgnoreCase(itemName) && item.getHealAmount() > 0){
-                currentHP = Math.min(maxHP, currentHP + item.getHealAmount());
-                System.out.println("You healed " + item.getHealAmount() + " HP. Current HP: " + currentHP);
+
+
+    public void heal(String itemName) {
+        for (Items item : inventory) {
+            if (item.getName().equalsIgnoreCase(itemName) && item.getHealPoints() > 0) {
+                health = Math.min(maxHP, health + item.getHealPoints());
+                System.out.println("You healed " + item.getHealPoints() + " HP. Current HP: " + health);
                 inventory.remove(item);
                 return;
             }
@@ -180,4 +186,3 @@ public class Player extends Character {
         System.out.println("No healing item found in inventory");
     }
 }
-

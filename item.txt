@@ -1,3 +1,4 @@
+itemID~itemName~itemDescription~itemType~itemHP~itemDMG~itemRegion
 1~Cactus Flask~Made from the hollowed and de-spined remains of a cactus, this flask allows the player to take water with them to replenish hydration.~healing~2~0~desert
 2~Scorpion Venom Darts~Throwing darts dipped in scorpion venom. Allows the player to invenomate any desert assailant.~weapon~0~3~desert
 3~Sunstone Amulet~Absorbs the power of the sun to enhance the wearers’ vitality.~healing~5~0~all
