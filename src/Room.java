@@ -28,7 +28,7 @@ public class Room {
 
     // Method to mark the room as visited
     public void visit() {
-        boolean visited = true;
+        boolean this.visited = true;
     }
 
     public void setPuzzle(Puzzle puzzle) {

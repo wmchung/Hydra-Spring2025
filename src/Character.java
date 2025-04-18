@@ -35,8 +35,9 @@ public abstract class Character {
     }
 
     public void attack(Character target) {
-        System.out.println(this.name + " attacks " + target.getName() + " for " + this.attackPower + " damage!");
-        target.takeDamage(this.baseAttack);
+        int power = getAttackPower();
+        System.out.println(name + " attacks " + target.getName() + " for " + power + " damage!");
+        target.takeDamage(power);
     }
 
     public void flee() {
