@@ -116,33 +116,41 @@ public class GameMap {
     } //end loadPuzzles
 
     //method to load characters from file
-    public void loadCharacters(String file) throws FileNotFoundException{
+    public void loadCharacters(String file) throws FileNotFoundException {
         String line;
         try (Scanner input = new Scanner(new File(file))) {
-            input.nextLine();
+            input.nextLine(); // Skip the first line
             while (input.hasNext()) {
                 line = input.nextLine().trim();
                 if (!line.isEmpty()) {
-                    String[] parts = line.split("~", 5);
-                    String enemyID = parts[0];
-                    String name = parts[1];
-                    String region = parts[2];
-                    String roomID = parts[3];
-                    int health = Integer.parseInt(parts[4]);
-                    String dmgRange = parts[5];
-                    int threshold = Integer.parseInt(parts[6]);
-                    String fleeText = parts[7];
-                    String winText = parts[8];
-                    String loseText = parts[9];
+                    try {
+                        String[] parts = line.split("~", 10); // Adjust split to match the expected number of fields
+                        if (parts.length < 10) {
+                            throw new IllegalArgumentException("Invalid character data: " + line);
+                        }
 
-                    Enemy enemy = new Enemy(enemyID, name, region, roomID, health, dmgRange, threshold, fleeText, winText,
-                            loseText);
-                    characters.add(enemy);
+                        String enemyID = parts[0];
+                        String name = parts[1];
+                        String region = parts[2];
+                        String roomID = parts[3];
+                        int health = Integer.parseInt(parts[4]); // Validate numeric fields
+                        String dmgRange = parts[5];
+                        int threshold = Integer.parseInt(parts[6]);
+                        String fleeText = parts[7];
+                        String winText = parts[8];
+                        String loseText = parts[9];
 
+                        Enemy enemy = new Enemy(enemyID, name, region, roomID, health, dmgRange, threshold, fleeText, winText, loseText);
+                        characters.add(enemy);
+                    } catch (NumberFormatException e) {
+                        System.err.println("Error parsing numeric value in character data: " + line);
+                    } catch (IllegalArgumentException e) {
+                        System.err.println(e.getMessage());
+                    }
                 }
             }
         }
-    } //end loadCharacters
+    }//end loadCharacters
 
     //method to load npcs from file
     public void loadNPCs(String file) throws FileNotFoundException{
@@ -169,7 +177,7 @@ public class GameMap {
     private Room parseRoom(String line) throws IllegalArgumentException {
         String[] parts = line.split("~", 9);
 
-        if (parts.length < 9) {
+        if (parts.length <= 8) {
             throw new IllegalArgumentException("Invalid room data: " + line);
         } //validate rooms are parsing correctly
 
