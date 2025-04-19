@@ -60,10 +60,25 @@ public class Player extends Character {
         return maxHP;
     }
 
-    @Override
-    public int getAttackPower() {
-        int boost = (equippedItem != null) ? equippedItem.getAttackPower() : 0;
-        return baseAttack + boost + buffAmount;
+//    @Override
+//    public int getAttackPower(String itemName) {
+//
+//        Weapon weapon = (Weapon) equippedItem;
+//        if (equippedItem != null) {//? equippedItem.getAttackPower() : 0;
+//
+//        return baseAttack + boost + buffAmount;
+//    } }
+    public void pickUpItem(String itemName) {
+        List<Item> items = currentRoom.getItems();
+        for (Item item : items) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                inventory.add(item);
+                currentRoom.removeItem(item);
+                System.out.println("Picked up: " + item.getName() + " from " + currentRoom.getRoomId() + " room.");
+                return;
+            }
+        }
+        System.out.println("Item not found in the room.");
     }
 
     public void addBuff(int amount) {
@@ -112,7 +127,7 @@ public class Player extends Character {
             String nextRoomId = currentRoom.getExits().get(direction);
             if (rooms.containsKey(nextRoomId)) {
                 currentRoom = rooms.get(nextRoomId);
-                System.out.println("You moved " + direction + " to " + currentRoom.getName());
+                System.out.println("You moved " + direction + " to " + currentRoom.getRoomId());
             } else {
                 System.out.println("Room ID " + nextRoomId + " not found in map.");
             }
@@ -134,33 +149,70 @@ public class Player extends Character {
     }
 
     //method to pickup item form current room
-    public void pickUpItem(String itemName) {
-        if (currentRoom.hasItem(itemName)) { // Prevent adding null/empty items
-            Item item = currentRoom.getItems(itemName);
-            inventory.add(item);
+    public void pickUpItem(Item itemName) {
+//        if (currentRoom.hasItem(itemName)) { // Prevent adding null/empty items
+//            Item item = (Item) currentRoom.getItems(itemName);
+//            inventory.add(item);
+//            currentRoom.removeItem(itemName);
+//            System.out.println(itemName + " was added to Inventory");
+//        } else {
+//            System.out.println("Item not found in room");
+//        }
+        if (currentRoom.getItems().contains(itemName)) { //suggestion
             currentRoom.removeItem(itemName);
+            inventory.add(itemName);
             System.out.println(itemName + " was added to Inventory");
         } else {
             System.out.println("Item not found in room");
         }
+//        public void pickUpItem(Item itemName) { //suggestion
+//            Item itemToPickUp = null;
+//
+//            // Search the room's items list for a matching item name
+//            for (Item item : currentRoom.getItems()) {
+//                if (item.getItemName().equalsIgnoreCase(itemName)) {
+//                    itemToPickUp = item;
+//                    break;
+//                }
+//            }
+//
+//            if (itemToPickUp != null) {
+//                inventory.add(itemToPickUp);
+//                currentRoom.removeItem(itemToPickUp);
+//                System.out.println(itemName + " was added to Inventory");
+//            } else {
+//                System.out.println("Item not found in room");
+//            }
+//        }
     }
 
     // Method to remove an item from the player's inventory
-    public void inspectItem(String itemName) {
-        for (Item item : inventory) {
-            if (item.getItemName().equalsIgnoreCase(itemName)) {
-                System.out.println("Item:" + item.getName());
-                System.out.println("Description:" + item.getItemDescription());
-                System.out.println("Attack Boost:" + item.getAttackPower());
+//    public void inspectItem(String itemName) {
+//        for (Item item : inventory) {
+//            if (item.getItemName().equalsIgnoreCase(itemName)) {
+//                System.out.println("Item:" + item.getName());
+//                System.out.println("Description:" + item.getItemDescription());
+//                System.out.println("Attack Boost:" + item.getAttackPower());
+//
+//                return;
+//            }
+//        }
+//
+//        System.out.println("Item not in inventory");
+//
+//    }
+//    //Method to drop item
 
-                return;
+    public void inspectItem(Item item) {
+        if (inventory.contains(item)) {
+            System.out.println("Item: " + item.getItemDescription());
+            if (item instanceof Consumable) {
+                System.out.println("Item Health Points: " + ((Consumable) item).getHealingPoints());
+            } else if (item instanceof Weapon) {
+                System.out.println("Item Attack Points: " + ((Weapon) item).getAttackPower());
             }
         }
-
-        System.out.println("Item not in inventory");
-
-    }
-    //Method to drop item
+    }//end inspectItem
 
     public void dropItem(String itemName) {
         Iterator<Item> iterator = inventory.iterator();
@@ -203,19 +255,35 @@ public class Player extends Character {
 
 
     //method to equip or unequip items
-    public void equipItem(String itemName) {
+//    public void equipItem(String itemName) {
+//        for (Item item : inventory) {
+//            if (item.getItemName().equalsIgnoreCase(itemName) && item.getAttackPower() > 0) {
+//                if (equippedItem != null) {
+//                    equippedItem.setEquipped(false);
+//                }
+//                equippedItem = item;
+//                item.setEquipped(true);
+//                System.out.println(item.getItemName() + " equipped. Attack boosted by " + item.getAttackPower());
+//                return;
+//            }
+//        }
+//        System.out.println("No such weapon item found in inventory.");
+//    }
+
+    public void equipItem(String itemName) { //suggestion
         for (Item item : inventory) {
-            if (item.getItemName().equalsIgnoreCase(itemName) && item.getAttackPower() > 0) {
+            if (item instanceof Weapon) {
+                Weapon weapon = (Weapon) item;
                 if (equippedItem != null) {
-                    equippedItem.setEquipped(false);
+                    unEquipItem(); //unequip the current item first
                 }
-                equippedItem = item;
-                item.setEquipped(true);
-                System.out.println(item.getItemName() + " equipped. Attack boosted by " + item.getAttackPower());
-                return;
+                equippedItem = weapon;
+                attackPower = attackPower + weapon.getAttackPower();
+                System.out.println(weapon.getName() + " equipped. Attack damage increased to " + attackPower);
+            } else {
+                System.out.println("Item is not a weapon or not found in inventory.");
             }
         }
-        System.out.println("No such weapon item found in inventory.");
     }
 
     public void unEquipItem() {
@@ -229,15 +297,29 @@ public class Player extends Character {
     }
 
 
-    public void heal(String itemName) {
+//    public void heal(String itemName) {
+//        for (Item item : inventory) {
+//            if (item.getItemName().equalsIgnoreCase(itemName) && item.getHealingPoints() > 0) {
+//                health = Math.min(maxHP, health + item.getHealPoints());
+//                System.out.println("You healed " + item.getHealPoints() + " HP. Current HP: " + health);
+//                inventory.remove(item);
+//                return;
+//            }
+//        }
+//        System.out.println("No healing item found in inventory");
+//    }
+    public void heal(String itemName) { //suggestion
         for (Item item : inventory) {
-            if (item.getItemName().equalsIgnoreCase(itemName) && item.getHealPoints() > 0) {
-                health = Math.min(maxHP, health + item.getHealPoints());
-                System.out.println("You healed " + item.getHealPoints() + " HP. Current HP: " + health);
-                inventory.remove(item);
-                return;
-            }
-        }
-        System.out.println("No healing item found in inventory");
+         if (item instanceof Consumable) {
+            Consumable consumable = (Consumable) item;
+            //health += consumable.getItemHP(); // No cap on health
+            health = Math.min(maxHP, health + ((Consumable) item).getHealingPoints());
+            inventory.remove(consumable); // Remove the consumable after use
+            System.out.println("You healed " + consumable.getHealingPoints() + " HP. Current HP: " + health);
+        } else {
+            System.out.println("No healing item found in inventory.");
+         }
+     }
     }
+
 }

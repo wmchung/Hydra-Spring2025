@@ -22,7 +22,9 @@ public abstract class Character {
         return baseAttack;
     }
 
-    public abstract int getAttackPower();
+    public int getAttackPower() {
+        return baseAttack;
+    };
 
     public void takeDamage(int damage) {
         health -= damage;
