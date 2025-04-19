@@ -21,7 +21,7 @@ public class Player extends Character {
     private int maxHP;
     private boolean isAlive;
     private boolean hasWon;
-
+//make changes
     private List<String> defeatedEnemies;
     private List<String> completedPuzzles;
 
