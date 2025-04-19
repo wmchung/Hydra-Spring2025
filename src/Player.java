@@ -8,16 +8,29 @@ import java.util.Iterator;
 //Instance variables and attributes
 public class Player extends Character {
     private Room currentRoom;
-    private List<Items> inventory;
+    private List<Item> inventory;
+    private Item equippedItem;
+
     private int maxHP;
-    private Items equippedItem;
+    private boolean isAlive;
+    private boolean hasWon;
+
+    private List<String> defeatedEnemies;
+    private List<String> completedPuzzles;
+
+    private int buffAmount; // Temporary attack buff amount
 
     //constructor to initialize player with a name and starting room
     public Player(String name, int health, int attackPower, Room startingRoom) {
         super(name, health, attackPower);
         this.currentRoom = startingRoom;
         this.maxHP = health;
+        this.isAlive = true;
+        this.hasWon = false;
         this.inventory = new ArrayList<>();
+        this.defeatedEnemies = new ArrayList<>();
+        this.completedPuzzles = new ArrayList<>();
+        this.buffAmount = 0;
     }
 
     //Getters
@@ -28,12 +41,12 @@ public class Player extends Character {
         return currentRoom;
     }
 
-    public List<Items> getInventory() {
+    public List<Item> getInventory() {
 
         return inventory;
     }
 
-    public Items getEquippedItem() {
+    public Item getEquippedItem() {
 
         return equippedItem;
     }
@@ -43,10 +56,38 @@ public class Player extends Character {
         return health;
     }
 
+    public int getMaxHP() {
+        return maxHP;
+    }
+
     @Override
     public int getAttackPower() {
         int boost = (equippedItem != null) ? equippedItem.getAttackPower() : 0;
-        return attackPower + boost;
+        return baseAttack + boost + buffAmount;
+    }
+
+    public void addBuff(int amount) {
+        buffAmount += amount;
+    }
+
+    public void clearBuff() {
+        buffAmount = 0;
+    }
+
+    public void addDefeatedEnemy(String enemyID) {
+        defeatedEnemies.add(enemyID);
+    }
+
+    public boolean hasDefeated(String enemyID) {
+        return defeatedEnemies.contains(enemyID);
+    }
+
+    public void addCompletedPuzzle(String puzzleID) {
+        completedPuzzles.add(puzzleID);
+    }
+
+    public boolean hasSolved(String puzzleID) {
+        return completedPuzzles.contains(puzzleID);
     }
 
     public int getEffectiveAttackPower() {
@@ -74,17 +115,29 @@ public class Player extends Character {
             if (rooms.containsKey(nextRoomNumber)) {
                 //move player to new room
                 currentRoom = rooms.get(nextRoomNumber);
-                System.out.println("You moved " + direction + " to" + currentRoom.getName());
+                System.out.println("You moved " + direction + " to " + currentRoom.getName());
             } else {
                 System.out.println("You can't go that way!");
             }
         }
     }
 
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public boolean hasWon() {
+        return hasWon;
+    }
+
+    public void setHasWon(boolean hasWon) {
+        this.hasWon = hasWon;
+    }
+
     //method to pickup item form current room
     public void pickUpItem(String itemName) {
         if (currentRoom.hasItem(itemName)) { // Prevent adding null/empty items
-            Items item = currentRoom.getItem(itemName);
+            Item item = currentRoom.getItem(itemName);
             inventory.add(item);
             currentRoom.removeItem(itemName);
             System.out.println(itemName + " was added to Inventory");
@@ -95,8 +148,8 @@ public class Player extends Character {
 
     // Method to remove an item from the player's inventory
     public void inspectItem(String itemName) {
-        for (Items item : inventory) {
-            if (item.getName().equalsIgnoreCase(itemName)) {
+        for (Item item : inventory) {
+            if (item.getItemName().equalsIgnoreCase(itemName)) {
                 System.out.println("Item:" + item.getName());
                 System.out.println("Description:" + item.getItemDescription());
                 System.out.println("Attack Boost:" + item.getAttackPower());
@@ -111,10 +164,10 @@ public class Player extends Character {
     //Method to drop item
 
     public void dropItem(String itemName) {
-        Iterator<Items> iterator = inventory.iterator();
+        Iterator<Item> iterator = inventory.iterator();
         while (iterator.hasNext()) {
-            Items item = iterator.next();
-            if (item.getName().equalsIgnoreCase(itemName)) {
+            Item item = iterator.next();
+            if (item.getItemName().equalsIgnoreCase(itemName)) {
                 iterator.remove();
                 currentRoom.addItem(item);
                 System.out.println(itemName + " has been dropped from inventory");
@@ -131,8 +184,8 @@ public class Player extends Character {
             System.out.println("Your inventory is empty.");
         } else {
             System.out.println("Inventory: ");
-            for (Items item : inventory) {
-                System.out.println(item.getName() + ":" + item.getItemDescription());
+            for (Item item : inventory) {
+                System.out.println(item.getItemName() + ":" + item.getItemDescription());
             }
         }
     }
@@ -140,23 +193,26 @@ public class Player extends Character {
     @Override
     public void takeDamage(int amount) {
         health -= amount;
-        if (health < 0) {
+        if (health <= 0) {
             health = 0;
+            isAlive = false;
+            System.out.println("You have been defeated!");
+        } else {
+            System.out.println("You were hit and lost " + amount + " HP! Current HP: " + health);
         }
-        System.out.println("You were hit and lost " + amount + " HP! Current HP: " + health);
     }
 
 
     //method to equip or unequip items
     public void equipItem(String itemName) {
-        for (Items item : inventory) {
-            if (item.getName().equalsIgnoreCase(itemName) && item.getAttackPower() > 0) {
+        for (Item item : inventory) {
+            if (item.getItemName().equalsIgnoreCase(itemName) && item.getAttackPower() > 0) {
                 if (equippedItem != null) {
                     equippedItem.setEquipped(false);
                 }
                 equippedItem = item;
                 item.setEquipped(true);
-                System.out.println(item.getName() + " equipped. Attack boosted by " + item.getAttackPower());
+                System.out.println(item.getItemName() + " equipped. Attack boosted by " + item.getAttackPower());
                 return;
             }
         }
@@ -175,8 +231,8 @@ public class Player extends Character {
 
 
     public void heal(String itemName) {
-        for (Items item : inventory) {
-            if (item.getName().equalsIgnoreCase(itemName) && item.getHealPoints() > 0) {
+        for (Item item : inventory) {
+            if (item.getItemName().equalsIgnoreCase(itemName) && item.getHealPoints() > 0) {
                 health = Math.min(maxHP, health + item.getHealPoints());
                 System.out.println("You healed " + item.getHealPoints() + " HP. Current HP: " + health);
                 inventory.remove(item);

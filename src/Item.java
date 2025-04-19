@@ -12,15 +12,15 @@ public class Item {
     private String tag; //itemType
    // private int damagePoints; //weapons attribute
    // private boolean equipped = false; //player attribute
-    private String location; //itemRegion
+    private String roomID; //itemRegion
     //private String name; //already have itemName
 //change
-    public Item(String itemID, String itemName, String itemDescription, String tag, String location) {
+    public Item(String itemID, String itemName, String itemDescription, String tag, String roomID) {
         this.itemID = itemID;
         this.itemName = itemName;
         this.itemDescription = itemDescription;
         this.tag = tag;
-        this.location = location;
+        this.roomID = roomID;
     }
 
     public String getItemID() {
@@ -44,8 +44,8 @@ public class Item {
     }
 
 
-    public String getLocation() {
-        return location;
+    public String getRoomID() {
+        return roomID;
     }
 
     public String getName() {
