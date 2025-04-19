@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Iterator;
 
-
+//push for whit
 //Instance variables and attributes
 public class Player extends Character {
     private Room currentRoom;
