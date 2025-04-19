@@ -1,113 +1,124 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Room {
-    private String type;
     private String roomId;
-    private String name;
+    private String roomArea; //check back on this
+    private String roomType;
     private String description;
-    private Enemy enemy;
     private boolean visited;
-    private Map<String, Integer> exits;
-    private Map<String, Items> items = new HashMap<>();//Item Name and description
-    private Puzzle puzzle;
+    private Map<String, String> exits;
+    //private Map<String, Item> items = new HashMap<>();//Item Name and description
+    private List<Item> items;
+    private List<Enemy> enemies;
+    private List<Puzzle> puzzles;
+    private List<NPC> npcs;
 
-    public Room(String roomId, String name, String description) {
-        this.roomId=roomId;
-        this.type=type;
-        this.name=name;
+    public Room(String roomId, String roomArea, String roomType, String description) {
+        this.roomId = roomId;
+        this.roomArea = roomArea;
+        this.roomType = roomType;
         this.description = description;
-        this.visited=true;
-        this.exits=new HashMap<>();
-        this.items=new HashMap<>();
+        this.visited = false;
+        this.exits = new HashMap<>();
+        this.items = new ArrayList<>();
+        this.enemies = new ArrayList<>();
+        this.puzzles = new ArrayList<>();
+        this.npcs = new ArrayList<>();
     }
-    // Method to add an exit and associate room number with direction
-    public void addExit(String direction, int roomNumber) {
-        exits.put(direction, roomNumber);
-    }
-
-    // Method to mark the room as visited
-    public void visit() {
-        boolean this.visited = true;
-    }
-
-    public void setPuzzle(Puzzle puzzle) {
-        this.puzzle = puzzle;
-    }
-
-    //method to add items to inventory
-    public void addItem(Items item) {
-        items.put(item.getName(), item);
-    }
-
-    //method to remove items from room
-    public boolean removeItem(String itemName) {
-        return items.remove(itemName) != null;
-    }
-
-    //method to check if an item is in a room
-    public boolean hasItem(String itemName){
-        return items.containsKey(itemName);
-    }
-//Getters - gets value of each variable
 
     public String getRoomId() {
         return roomId;
+    }
+
+    public String getRoomArea() {
+        return roomArea;
+    }
+
+    public String getRoomType() {
+        return roomType;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public String getType() {
-        return type;
-
-    }
-
     public boolean isVisited() {
         return visited;
     }
 
-    public Map<String, Integer> getExits() {
+    public Map<String, String> getExits() {
         return exits;
     }
 
-    public Items getItem(String itemName) {
-        return items.get(itemName);
-    }
-
-    public String getItemDescription(String itemName) {
-        Items item = items.get(itemName);
-        return (item != null) ? item.getItemDescription() : "No description available.";
-    }
-    public Map<String, Items> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
-    public Puzzle getPuzzle() {
-        return puzzle;
-    }
-    public String getName() {
-        return name;
-
+    public List<Enemy> getEnemies() {
+        return enemies;
     }
 
-    public Enemy getEnemy() {
-
-        return enemy;
-    }
-    //Setter
-    public void setMonster(Enemy enemy) {
-        this.enemy = enemy;
+    public List<Puzzle> getPuzzles() {
+        return puzzles;
     }
 
-    //added puzzle method in room
+    public List<NPC> getNpcs() {
+        return npcs;
+    }
+
+    // Methods to add elements
+    public void addExit(String direction, String roomId) {
+        exits.put(direction, roomId);
+    }
+
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
+    public void addEnemy(Enemy enemy) {
+        enemies.add(enemy);
+    }
+
     public void addPuzzle(Puzzle puzzle) {
+        puzzles.add(puzzle);
     }
 
-    //added character method in room
-    public void addCharacters(Character character) {
+    public void addNpc(NPC npc) {
+        npcs.add(npc);
+    }
 
+    // Methods to remove elements
+    public void removeItem(Item item) {
+        items.remove(item);
+    }
+
+    public void removeEnemy(Enemy enemy) {
+        enemies.remove(enemy);
+    }
+
+    public void removePuzzle(Puzzle puzzle) {
+        puzzles.remove(puzzle);
+    }
+
+    public void removeNpc(NPC npc) {
+        npcs.remove(npc);
+    }
+
+    // Mark room as visited
+    public void visit() {
+        this.visited = true;
+    }
+
+    public void checkVisitedRoom() {
+        if (this.isVisited()) {
+            System.out.println("You've been here before.");
+        }
+        this.visit();
+        System.out.println(this.getDescription());
+        System.out.println();
     }
 }
 

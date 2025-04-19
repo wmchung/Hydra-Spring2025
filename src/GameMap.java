@@ -62,7 +62,7 @@ public class GameMap {
                 line = input.nextLine().trim();
                 if (!line.isEmpty()) {
                     String[] parts = line.split("~");
-                    int itemID = Integer.parseInt(parts[0]);
+                    String itemID = parts[0];
                     String itemName = parts[1];
                     String itemDescription = parts[2];
                     String itemType = parts[3];
@@ -79,7 +79,7 @@ public class GameMap {
                                 itemHP);
                         items.add(consumable);
                     } else {
-                        Items genericItem = new Items(itemID, itemName, itemDescription, itemType, itemRegion);
+                        Item genericItem = new Item(itemID, itemName, itemDescription, itemType, itemRegion);
                         items.add(genericItem);
                     }
                 }
@@ -174,32 +174,33 @@ public class GameMap {
         } //validate rooms are parsing correctly
 
         String roomId = parts[0];
-        String roomName = parts[1];
-        String roomDesc = parts[2];
-        Room room = new Room(roomId, roomName, roomDesc);
+        String roomArea = parts[1];
+        String roomType = parts[2];
+        String roomDesc = parts[3];
+        Room room = new Room(roomId, roomArea, roomType, roomDesc);
         System.out.println("Parsing room " + roomId); //debug statement
 
-        String[] exits = parts[3].split(",");
-        for (String exit : exits) {
-            if (!exits.equals("0")) {
-                String[] exitParts = exit.split(":");
-                if (exitParts.length == 2) {
-                    String direction = exitParts[0];
-                    int nextRoomNumber = Integer.parseInt(exitParts[1]);
-                    room.addExit(direction, nextRoomNumber);
-                    // System.out.println("Exit added " + direction + " - > " + nextRoomNumber); //debug statement
+        if(!parts[4].equals("0")) {
+            String[] exits = parts[4].split(",");
+            for (String exit : exits) {
+                if (!exit.isEmpty()) {
+                    String direction = exit.substring(0, 2);
+                    String nextRoomId = exit.substring(2);
+                    room.addExit(direction, nextRoomId);
+                    System.out.println("Exit added " + direction + " - > " + nextRoomId); //debug statement
                 }
             }
-        } //end room parse
+        }//end room parse
 
-        if (!parts[4].equals("0")) {
-            String[] roomItems = parts[4].split("~");
+        if (!parts[5].equals("0")) {
+            String itemData = parts[5].replace("~", ""); // Remove enclosing ~ characters
+            String[] roomItems = itemData.split(",");
             for (String itemId : roomItems) {
                 if (!itemId.isEmpty()) {
-                    for (Items item : items) {
-                        if (item.getItemID()) {
+                    for (Item item : items) {
+                        if (item.getItemID().equalsIgnoreCase(itemId)) {
                             room.addItem(item);
-                            System.out.println("Item added to room " + item.getItemName()); //debug statement
+                            System.out.println("Item added to room: " + item.getItemName()); //debug statement
                             break;
                         }
                     }
@@ -207,8 +208,8 @@ public class GameMap {
             }
         }//end item parse
 
-        if (!parts[5].equals("0")) {
-            String[] roomPuzzles = parts[5].split("~");
+        if (!parts[6].equals("0")) {
+            String[] roomPuzzles = parts[6].split("~");
             for (String puzId : roomPuzzles) {
                 if (!puzId.isEmpty()) {
                     for (Puzzle puzzle : puzzles) {
@@ -222,13 +223,13 @@ public class GameMap {
             }
         } //end puzzle parse
 
-        if (!parts[6].equals("0")) {
-            String[] roomCharacters = parts[6].split("~");
+        if (!parts[7].equals("0")) {
+            String[] roomCharacters = parts[7].split("~");
             for (String enemyId : roomCharacters) {
                 if (!enemyId.isEmpty()) {
                     for (Character enemy : characters ) {
                         if (enemyId.equals(enemy)) {
-                            room.addCharacters(enemy);
+                            room.addEnemy((Enemy) enemy);
                             System.out.println("Character added to room " + enemyId); //debug statement
                             break;
                         }
@@ -237,26 +238,40 @@ public class GameMap {
             }
         } //end character parse
 
+        if (!parts[8].equals("0")) {
+            String[] roomNPCs = parts[8].split(",");
+            for (String npcId : roomNPCs) {
+                if (!npcId.isEmpty()) {
+                    for (NPC npc : npcs) {
+                        if (npc.getNpcId().equalsIgnoreCase(npcId)) {
+                            room.addNpc(npc);
+                            System.out.println("NPC added to room: " + npcId);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         return room;
     } //end parseRoom
 
-// Method to find a room by its ID
+    // Method to find a room by its ID
     public Room getRoomById(String roomId) {
         for (Room room : rooms) {
             if (room.getRoomId().equalsIgnoreCase(roomId)) {
                 return room;
             }
         }
-        return null; // Return null if no room is found
+        return null; //return null if no room is found
     }
 
     // Method to determine the next room in a given direction
     public Room getRoomInDirection(Room currentRoom, String direction) {
-        Integer nextRoomNumber = currentRoom.getExits().get(direction); // Retrieve the next room number
-        if (nextRoomNumber != null) {
-            return getRoomById(String.valueOf(nextRoomNumber)); // Find and return the next room
+        String nextRoomId = currentRoom.getExits().get(direction); //retrieve the next room number
+        if (nextRoomId != null) {
+            return getRoomById(nextRoomId); //find and return the next room
         }
-        return null; // Return null if no room exists in the given direction
+        return null; //return null if no room exists in the given direction
     }
 
     //method to convert shorthand direction input to full directions
