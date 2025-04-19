@@ -8,8 +8,15 @@ import java.util.Iterator;
 //Instance variables and attributes
 public class Player extends Character {
     private Room currentRoom;
-    private List<Items> inventory;
-    private Items equippedItem;
+    private List<Item> inventory;
+    private Item equippedItem;
+
+    private int maxHP;
+    private boolean isAlive;
+    private boolean hasWon;
+
+    private List<String> defeatedEnemies;
+    private List<String> completedPuzzles;
 
     private int maxHP;
     private boolean isAlive;
@@ -41,12 +48,12 @@ public class Player extends Character {
         return currentRoom;
     }
 
-    public List<Items> getInventory() {
+    public List<Item> getInventory() {
 
         return inventory;
     }
 
-    public Items getEquippedItem() {
+    public Item getEquippedItem() {
 
         return equippedItem;
     }
@@ -137,7 +144,7 @@ public class Player extends Character {
     //method to pickup item form current room
     public void pickUpItem(String itemName) {
         if (currentRoom.hasItem(itemName)) { // Prevent adding null/empty items
-            Items item = currentRoom.getItem(itemName);
+            Item item = currentRoom.getItem(itemName);
             inventory.add(item);
             currentRoom.removeItem(itemName);
             System.out.println(itemName + " was added to Inventory");
@@ -148,8 +155,8 @@ public class Player extends Character {
 
     // Method to remove an item from the player's inventory
     public void inspectItem(String itemName) {
-        for (Items item : inventory) {
-            if (item.getName().equalsIgnoreCase(itemName)) {
+        for (Item item : inventory) {
+            if (item.getItemName().equalsIgnoreCase(itemName)) {
                 System.out.println("Item:" + item.getName());
                 System.out.println("Description:" + item.getItemDescription());
                 System.out.println("Attack Boost:" + item.getAttackPower());
@@ -164,10 +171,10 @@ public class Player extends Character {
     //Method to drop item
 
     public void dropItem(String itemName) {
-        Iterator<Items> iterator = inventory.iterator();
+        Iterator<Item> iterator = inventory.iterator();
         while (iterator.hasNext()) {
-            Items item = iterator.next();
-            if (item.getName().equalsIgnoreCase(itemName)) {
+            Item item = iterator.next();
+            if (item.getItemName().equalsIgnoreCase(itemName)) {
                 iterator.remove();
                 currentRoom.addItem(item);
                 System.out.println(itemName + " has been dropped from inventory");
@@ -184,8 +191,8 @@ public class Player extends Character {
             System.out.println("Your inventory is empty.");
         } else {
             System.out.println("Inventory: ");
-            for (Items item : inventory) {
-                System.out.println(item.getName() + ":" + item.getItemDescription());
+            for (Item item : inventory) {
+                System.out.println(item.getItemName() + ":" + item.getItemDescription());
             }
         }
     }
@@ -205,14 +212,14 @@ public class Player extends Character {
 
     //method to equip or unequip items
     public void equipItem(String itemName) {
-        for (Items item : inventory) {
-            if (item.getName().equalsIgnoreCase(itemName) && item.getAttackPower() > 0) {
+        for (Item item : inventory) {
+            if (item.getItemName().equalsIgnoreCase(itemName) && item.getAttackPower() > 0) {
                 if (equippedItem != null) {
                     equippedItem.setEquipped(false);
                 }
                 equippedItem = item;
                 item.setEquipped(true);
-                System.out.println(item.getName() + " equipped. Attack boosted by " + item.getAttackPower());
+                System.out.println(item.getItemName() + " equipped. Attack boosted by " + item.getAttackPower());
                 return;
             }
         }
@@ -231,8 +238,8 @@ public class Player extends Character {
 
 
     public void heal(String itemName) {
-        for (Items item : inventory) {
-            if (item.getName().equalsIgnoreCase(itemName) && item.getHealPoints() > 0) {
+        for (Item item : inventory) {
+            if (item.getItemName().equalsIgnoreCase(itemName) && item.getHealPoints() > 0) {
                 health = Math.min(maxHP, health + item.getHealPoints());
                 System.out.println("You healed " + item.getHealPoints() + " HP. Current HP: " + health);
                 inventory.remove(item);
