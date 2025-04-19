@@ -107,18 +107,17 @@ public class Player extends Character {
     }
 
     //Method to move player in direction
-    public void move(String direction, Map<Integer, Room> rooms) {
-        //Validate direction and room exits
+    public void move(String direction, Map<String, Room> rooms) {
         if (currentRoom.getExits().containsKey(direction)) {
-            int nextRoomNumber = currentRoom.getExits().get(direction);
-            //Check if the next room exists in the map
-            if (rooms.containsKey(nextRoomNumber)) {
-                //move player to new room
-                currentRoom = rooms.get(nextRoomNumber);
+            String nextRoomId = currentRoom.getExits().get(direction);
+            if (rooms.containsKey(nextRoomId)) {
+                currentRoom = rooms.get(nextRoomId);
                 System.out.println("You moved " + direction + " to " + currentRoom.getName());
             } else {
-                System.out.println("You can't go that way!");
+                System.out.println("Room ID " + nextRoomId + " not found in map.");
             }
+        } else {
+            System.out.println("No exit in that direction.");
         }
     }
 
@@ -137,7 +136,7 @@ public class Player extends Character {
     //method to pickup item form current room
     public void pickUpItem(String itemName) {
         if (currentRoom.hasItem(itemName)) { // Prevent adding null/empty items
-            Item item = currentRoom.getItem(itemName);
+            Item item = currentRoom.getItems(itemName);
             inventory.add(item);
             currentRoom.removeItem(itemName);
             System.out.println(itemName + " was added to Inventory");
