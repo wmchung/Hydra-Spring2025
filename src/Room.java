@@ -139,7 +139,7 @@ public class Room {
             System.out.println(getDescription());
             return true;
         }
-        System.out.printf("Incomplete tasks");
+        System.out.println("Incomplete tasks");
         return false;
     }
 
