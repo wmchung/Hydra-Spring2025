@@ -9,6 +9,8 @@ public class Room {
     private String roomType;
     private String description;
     private boolean visited;
+    private boolean locked;
+    private String keyItem;
     private Map<String, String> exits;
     //private Map<String, Item> items = new HashMap<>();//Item Name and description
     private List<Item> items;
@@ -22,6 +24,8 @@ public class Room {
         this.roomType = roomType;
         this.description = description;
         this.visited = false;
+        this.locked = false;
+        this.keyItem = null;
         this.exits = new HashMap<>();
         this.items = new ArrayList<>();
         this.enemies = new ArrayList<>();
@@ -47,6 +51,14 @@ public class Room {
 
     public boolean isVisited() {
         return visited;
+    }
+
+    public String getKeyItem() {
+        return keyItem;
+    }
+
+    public boolean isLocked() {
+        return locked;
     }
 
     public Map<String, String> getExits() {
@@ -119,6 +131,24 @@ public class Room {
         this.visit();
         System.out.println(this.getDescription());
         System.out.println();
+    }
+
+    public boolean unlock(String item) {
+        if (locked && keyItem != null && keyItem.equalsIgnoreCase(item)) {
+            locked = false;
+            System.out.println(getDescription());
+            return true;
+        }
+        System.out.printf("Incomplete tasks");
+        return false;
+    }
+
+    public boolean hasEnemy() {
+        return enemies != null && !enemies.isEmpty();
+    }
+
+    public boolean hasPuzzle() {
+        return puzzles != null && !puzzles.isEmpty();
     }
 }
 

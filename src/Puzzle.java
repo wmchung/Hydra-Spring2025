@@ -9,6 +9,7 @@ public class Puzzle {
     private String requiredItem; //tbd
     private int damageOnFailure; //tbd
     private int attempts;
+    private boolean puzzleSolved;
 
     public Puzzle(String area, String puzzleId, String puzzleRoomId, String description, String solution,
                   String completionMessage, String failureMessage, String requiredItem, int damageOnFailure, int attempts) {
@@ -22,6 +23,7 @@ public class Puzzle {
         this.requiredItem = requiredItem;
         this.damageOnFailure = damageOnFailure;
         this.attempts = attempts;
+        this.puzzleSolved = false;
     }
 
     public String getArea() {
@@ -70,5 +72,13 @@ public class Puzzle {
 
     public void setAttempts(int attempts) {
         this.attempts = attempts;
+    }
+
+    public boolean isPuzzleSolved() {
+        return puzzleSolved;
+    }
+
+    public void setPuzzleSolved(boolean puzzleSolved) {
+        this.puzzleSolved = puzzleSolved;
     }
 }
