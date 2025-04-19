@@ -10,17 +10,20 @@ public class Item {
     private String itemDescription;
     //private int healPoints; //consumables attribute
     private String tag; //itemType
-   // private int damagePoints; //weapons attribute
-   // private boolean equipped = false; //player attribute
+    // private int damagePoints; //weapons attribute
+    // private boolean equipped = false; //player attribute
     private String roomID; //itemRegion
     //private String name; //already have itemName
-//change
+    private boolean equipped; //can delete
+
+    //change
     public Item(String itemID, String itemName, String itemDescription, String tag, String roomID) {
         this.itemID = itemID;
         this.itemName = itemName;
         this.itemDescription = itemDescription;
         this.tag = tag;
         this.roomID = roomID;
+        this.equipped = false;
     }
 
     public String getItemID() {
@@ -50,7 +53,7 @@ public class Item {
 
     public String getName() {
         return itemName;
-    
+
     }
 
     public void setEquipped(boolean equipped) {
@@ -61,9 +64,5 @@ public class Item {
         return equipped;
     }
 
-
-    public int getAttackPower() {
-        return (tag != null && tag.equalsIgnoreCase("weapon")) ? damagePoints : 0;
-     }
-    }
+}
 

@@ -66,17 +66,17 @@ public class GameMap {
                     String itemName = parts[1];
                     String itemDescription = parts[2];
                     String itemType = parts[3];
-                    int itemHP = parts[4].isEmpty() ? 0 : Integer.parseInt(parts[4]);
-                    int itemDMG = parts[5].isEmpty() ? 0 : Integer.parseInt(parts[5]);
+                    int itemAttribute = parts[4].isEmpty() ? 0 : Integer.parseInt(parts[4]);
+                    int uses = parts[5].isEmpty() ? 0 : Integer.parseInt(parts[5]);
                     String itemRegion = parts[6];
 
                     // Create item based on type
                     if (itemType.equalsIgnoreCase("Weapon")) {
-                        Weapon weapon = new Weapon(itemID, itemName, itemDescription, itemType, itemRegion, itemDMG);
+                        Weapon weapon = new Weapon(itemID, itemName, itemDescription, itemType, itemRegion, itemAttribute, uses);
                         items.add(weapon);
                     } else if (itemType.equalsIgnoreCase("Healing")) {
                         Consumable consumable = new Consumable(itemID, itemName, itemDescription, itemType, itemRegion,
-                                itemHP);
+                                itemAttribute, uses);
                         items.add(consumable);
                     } else {
                         Item genericItem = new Item(itemID, itemName, itemDescription, itemType, itemRegion);

@@ -143,12 +143,16 @@ public class Room {
         return false;
     }
 
-    public boolean hasEnemy() {
+    public boolean hasEnemy(String enemy) {
         return enemies != null && !enemies.isEmpty();
     }
 
     public boolean hasPuzzle() {
         return puzzles != null && !puzzles.isEmpty();
+    }
+
+    public boolean hasItem() {
+        return items != null && !items.isEmpty();
     }
 }
 
