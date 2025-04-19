@@ -9,15 +9,28 @@ import java.util.Iterator;
 public class Player extends Character {
     private Room currentRoom;
     private List<Items> inventory;
-    private int maxHP;
     private Items equippedItem;
+
+    private int maxHP;
+    private boolean isAlive;
+    private boolean hasWon;
+
+    private List<String> defeatedEnemies;
+    private List<String> completedPuzzles;
+
+    private int buffAmount; // Temporary attack buff amount
 
     //constructor to initialize player with a name and starting room
     public Player(String name, int health, int attackPower, Room startingRoom) {
         super(name, health, attackPower);
         this.currentRoom = startingRoom;
         this.maxHP = health;
+        this.isAlive = true;
+        this.hasWon = false;
         this.inventory = new ArrayList<>();
+        this.defeatedEnemies = new ArrayList<>();
+        this.completedPuzzles = new ArrayList<>();
+        this.buffAmount = 0;
     }
 
     //Getters
@@ -43,10 +56,38 @@ public class Player extends Character {
         return health;
     }
 
+    public int getMaxHP() {
+        return maxHP;
+    }
+
     @Override
     public int getAttackPower() {
         int boost = (equippedItem != null) ? equippedItem.getAttackPower() : 0;
-        return attackPower + boost;
+        return baseAttack + boost + buffAmount;
+    }
+
+    public void addBuff(int amount) {
+        buffAmount += amount;
+    }
+
+    public void clearBuff() {
+        buffAmount = 0;
+    }
+
+    public void addDefeatedEnemy(String enemyID) {
+        defeatedEnemies.add(enemyID);
+    }
+
+    public boolean hasDefeated(String enemyID) {
+        return defeatedEnemies.contains(enemyID);
+    }
+
+    public void addCompletedPuzzle(String puzzleID) {
+        completedPuzzles.add(puzzleID);
+    }
+
+    public boolean hasSolved(String puzzleID) {
+        return completedPuzzles.contains(puzzleID);
     }
 
     public int getEffectiveAttackPower() {
@@ -74,11 +115,23 @@ public class Player extends Character {
             if (rooms.containsKey(nextRoomNumber)) {
                 //move player to new room
                 currentRoom = rooms.get(nextRoomNumber);
-                System.out.println("You moved " + direction + " to" + currentRoom.getName());
+                System.out.println("You moved " + direction + " to " + currentRoom.getName());
             } else {
                 System.out.println("You can't go that way!");
             }
         }
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public boolean hasWon() {
+        return hasWon;
+    }
+
+    public void setHasWon(boolean hasWon) {
+        this.hasWon = hasWon;
     }
 
     //method to pickup item form current room
@@ -140,10 +193,13 @@ public class Player extends Character {
     @Override
     public void takeDamage(int amount) {
         health -= amount;
-        if (health < 0) {
+        if (health <= 0) {
             health = 0;
+            isAlive = false;
+            System.out.println("You have been defeated!");
+        } else {
+            System.out.println("You were hit and lost " + amount + " HP! Current HP: " + health);
         }
-        System.out.println("You were hit and lost " + amount + " HP! Current HP: " + health);
     }
 
 
