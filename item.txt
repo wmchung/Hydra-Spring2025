@@ -1,6 +1,6 @@
 itemID~itemName~itemDescription~itemType~itemHP~itemDMG~roomID
 AR01.1~Cactus Flask~Made from the hollowed and de-spined remains of a cactus, this flask allows the player to take water with them to replenish hydration.~healing~5~2~AR01
-AR01.2~Scorpion Venom Darts~Throwing darts dipped in scorpion venom. Allows the player to invenomate any desert assailant.~weapon~3~AR01
+AR01.2~Scorpion Venom Darts~Throwing darts dipped in scorpion venom. Allows the player to invenomate any desert assailant.~weapon~5~3~AR01
 RA01.0~Sunstone Amulet~Absorbs the power of the sun to enhance the wearers’ vitality.~healing~1~5~RA01
 RA01.1~Fruit Basket~Juicy and succulent, a fruit basket is just what the doctor ordered to combat hunger and dehydration.~healing~1~3~RA01
 AR03.0~Vine Grappler~Shaped like a grappling hook, the vine grappler is held in one hand, secured at the wrist, and enables upward mobility in the dense jungle. This can allow the player to reach otherwise inaccessible key locations and items.~puzzleIem~0~AR03

@@ -6,12 +6,12 @@ public class Weapon extends Item {
         this.amount=amount;
         this.damagePoints=damagePoints;
     }
-
+    public int getDamagePoints() {
+        return damagePoints;
+    }
     public int getAmount() {
         return amount;
     }
 
-    public int getDamagePoints() {
-        return damagePoints;
-    }
+
 }
