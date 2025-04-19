@@ -18,13 +18,6 @@ public class Player extends Character {
     private List<String> defeatedEnemies;
     private List<String> completedPuzzles;
 
-    private int maxHP;
-    private boolean isAlive;
-    private boolean hasWon;
-
-    private List<String> defeatedEnemies;
-    private List<String> completedPuzzles;
-
     private int buffAmount; // Temporary attack buff amount
 
     //constructor to initialize player with a name and starting room
