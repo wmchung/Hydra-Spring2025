@@ -1,8 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Iterator;
+import java.util.*;
 
 //push for whit
 //Instance variables and attributes
@@ -19,6 +15,7 @@ public class Player extends Character {
     private List<String> completedPuzzles;
 
     private int buffAmount; // Temporary attack buff amount
+    private Set<String> collectedKey;
 
     //constructor to initialize player with a name and starting room
     public Player(String name, int health, int attackPower, Room startingRoom) {
@@ -31,6 +28,7 @@ public class Player extends Character {
         this.defeatedEnemies = new ArrayList<>();
         this.completedPuzzles = new ArrayList<>();
         this.buffAmount = 0;
+        this.collectedKey = new HashSet<>();
     }
 
     //Getters
@@ -146,6 +144,25 @@ public class Player extends Character {
 
     public void setHasWon(boolean hasWon) {
         this.hasWon = hasWon;
+    }
+
+    public void collectKey(String key) {
+        if (key != null && !key.isEmpty()) {
+            collectedKey.add(key);
+            System.out.println("Key collected: " + key);
+        }
+    }
+
+    public boolean hasKey(String key) {
+        return collectedKey.contains(key);
+    }
+
+    public boolean hasAllKeys(Set<String> requiredKeys) {
+        return collectedKey.containsAll(requiredKeys);
+    }
+
+    public Set<String> getCollectedKeys() {
+        return collectedKey;
     }
 
     //method to pickup item form current room
