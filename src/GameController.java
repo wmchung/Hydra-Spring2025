@@ -14,7 +14,15 @@ public class GameController {
     public void startGame() {
 
     }
+    public void help (){
+        //final boss room
 
+        //show puzzle status
+//        for(Puzzle puzzle : gameMap.getPuzzle()){
+//            String status = puzzle.isPuzzleSolved()? "Solved!" : "Not solved.";
+//            System.out.println("- Puzzle in Room '" + puzzle.getRoomID() + "': " + status);
+//        }
+    }
 
 
 }
