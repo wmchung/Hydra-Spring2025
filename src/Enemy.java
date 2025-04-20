@@ -7,6 +7,7 @@ public class Enemy extends Character {
     private String fleeText;
     private String winText;
     private String loseText;
+    private boolean defeated;
 
     public Enemy(String enemyID, String name, String region, String roomID,
                  int health, String damageRange, int threshold,
@@ -39,6 +40,14 @@ public class Enemy extends Character {
     public String getFleeText() { return fleeText; }
     public String getWinText() { return winText; }
     public String getLoseText() { return loseText; }
+
+    public void setDefeated(boolean defeated) {
+        this.defeated = defeated;
+    }
+
+    public boolean isDefeated() {
+        return defeated;
+    }
 
     @Override
     public String toString() {
