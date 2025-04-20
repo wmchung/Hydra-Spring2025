@@ -107,8 +107,18 @@ public class GameController {
         String puzzleId = parts[0];
         String answer = parts[1];
 
+        if (puzzleId.equalsIgnoreCase("FP")) {
+            handleFinalPuzzle(answer);
+            return;
+        }
+
         for (Puzzle puzzle : player.getCurrentRoom().getPuzzles()) {
             if (puzzle.getPuzzleId().equalsIgnoreCase(puzzleId)) {
+                if (puzzle.requiresItem() && !player.hasItem(puzzle.getRequiredItem())) {
+                    System.out.println("You need " + puzzle.getRequiredItem() + " to solve this puzzle.");
+                    return;
+                }
+
                 if (puzzle.checkSolution(answer)) {
                     System.out.println(puzzle.getCompletionMessage());
                     puzzle.setPuzzleSolved(true);
@@ -122,6 +132,43 @@ public class GameController {
             }
         }
         System.out.println("No matching puzzle in this room.");
+    }
+
+    private void handleFinalPuzzle(String input) {
+        String[] requiredKeys = {
+                "Wisdom of the Water Key",
+                "Soul of the Sands Key",
+                "Spirit of the Snow Key",
+                "Heart of the Jungle Key"
+        };
+
+        for (String key : requiredKeys) {
+            if (!player.hasKey(key)) {
+                System.out.println("You are missing a required key: " + key);
+                return;
+            }
+        }
+
+        String[] inputKeys = input.split(","); // Example input: "Soul of the Sand Key,Soul of the Sands Key,Spirit of the Snow Key,Heart of the Jungle Key"
+        if (inputKeys.length != requiredKeys.length) {
+            System.out.println("Incorrect number of keys. Try again.");
+            return;
+        }
+
+        for (int i = 0; i < requiredKeys.length; i++) {
+            if (!inputKeys[i].trim().equalsIgnoreCase(requiredKeys[i])) {
+                System.out.println("The keys are placed in the wrong order. The pedestals reset.");
+                return;
+            }
+        }
+
+        Room finalBossRoom = gameMap.getRoomById("FB");
+        if (finalBossRoom != null) {
+            finalBossRoom.setLocked(false);
+            System.out.println("The door unlocks! You now have access to the final boss room.");
+        } else {
+            System.out.println("Error: Final boss room not found.");
+        }
     }
 
     private void handleFishing() {
@@ -189,15 +236,14 @@ public class GameController {
 
         String currentRoomId = player.getCurrentRoom().getRoomId();
         if (!currentRoomId.equals("AR01") && !currentRoomId.equals("AR02") && !currentRoomId.equals("AR03")) {
-            System.out.println("You can only save in armory rooms");
+            System.out.println("You can only save in armory rooms.");
             return;
         }
 
         SaveSystem saveSystem = new SaveSystem();
         try {
-            //access the fields of gameMap, might not work
             saveSystem.saveGame(gameMap.rooms, gameMap.items, gameMap.enemies, player);
-            System.out.println("Game saved successfully");
+            System.out.println("Game saved successfully.");
         } catch (IOException ioe) {
             System.out.println("Failed to save the game: " + ioe.getMessage());
         }
@@ -213,8 +259,15 @@ public class GameController {
         }
 
         try {
-            saveSystem.loadGame(gameMap, player); //may need to be adjusted
-            System.out.println("Game loaded successfully");
+            saveSystem.loadGame(gameMap, player);
+            String checkpointId = player.getCurrentCheckpoint();
+            Room checkpointRoom = gameMap.getRoomById(checkpointId);
+            if (checkpointRoom != null) {
+                player.setCurrentRoom(checkpointRoom);
+                System.out.println("Game loaded successfully. You are at checkpoint: " + checkpointId);
+            } else {
+                System.out.println("Checkpoint not found. Starting at the default room.");
+            }
         } catch (IOException ioe) {
             System.out.println("Failed to load the game: " + ioe.getMessage());
         } catch (NoSuchElementException nse) {

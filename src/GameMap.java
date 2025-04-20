@@ -7,19 +7,19 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class GameMap {
-     List<Enemy> enemies;
-     List<Room> rooms;
-     List<Item> items;
-     List<Puzzle> puzzles;
-     List<Character> characters;
-     List<NPC> npcs;
+     public List<Enemy> enemies;
+     public List<Room> rooms;
+     public List<Item> items;
+     public List<Puzzle> puzzles;
+     public List<Character> characters;
+     public List<NPC> npcs;
 
     public GameMap() {
-        rooms = new ArrayList<>();
-        items = new ArrayList<>();
-        puzzles = new ArrayList<>();
-        characters = new ArrayList<>();
-        npcs = new ArrayList<>();
+        this.rooms = new ArrayList<>();
+        this.items = new ArrayList<>();
+        this.puzzles = new ArrayList<>();
+        this.characters = new ArrayList<>();
+        this.npcs = new ArrayList<>();
     }
 
     //method to load item, puzzle, characters, NPCS, and rooms files
@@ -262,6 +262,9 @@ public class GameMap {
                         }
                     }
                 }
+            }
+            if (!room.getNpcs().isEmpty()) {
+                room.setCheckpoint(true);
             }
         }
         return room;

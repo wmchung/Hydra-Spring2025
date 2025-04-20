@@ -10,6 +10,7 @@ public class Room {
     private String description;
     private boolean visited;
     private boolean locked;
+    private boolean checkpoint;
     private String keyItem;
     private Map<String, String> exits;
     //private Map<String, Item> items = new HashMap<>();//Item Name and description
@@ -25,6 +26,7 @@ public class Room {
         this.description = description;
         this.visited = false;
         this.locked = false;
+        this.checkpoint = false;
         this.keyItem = null;
         this.exits = new HashMap<>();
         this.items = new ArrayList<>();
@@ -51,6 +53,10 @@ public class Room {
 
     public boolean isVisited() {
         return visited;
+    }
+
+    public boolean isCheckpoint() {
+        return checkpoint;
     }
 
     public String getKeyItem() {
@@ -143,6 +149,12 @@ public class Room {
         return false;
     }
 
+    public void updateCheckpointStatus() {
+        if (hasNPC()) {
+            setCheckpoint(true);
+        }
+    }
+
     public boolean hasEnemy() {
         return enemies != null && !enemies.isEmpty();
     }
@@ -165,6 +177,10 @@ public class Room {
 
     public void setLocked(boolean isLocked) {
         this.locked = isLocked;
+    }
+
+    public void setCheckpoint(boolean checkpoint) {
+        this.checkpoint = checkpoint;
     }
 }
 

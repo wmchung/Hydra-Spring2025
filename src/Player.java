@@ -16,6 +16,7 @@ public class Player extends Character {
 
     private int buffAmount; // Temporary attack buff amount
     private Set<String> collectedKey;
+    private String currentCheckpoint;
 
     //constructor to initialize player with a name and starting room
     public Player(String name, int health, int attackPower, Room startingRoom) {
@@ -29,6 +30,7 @@ public class Player extends Character {
         this.completedPuzzles = new ArrayList<>();
         this.buffAmount = 0;
         this.collectedKey = new HashSet<>();
+        this.currentCheckpoint = null;
     }
 
     //Getters
@@ -52,6 +54,10 @@ public class Player extends Character {
     public int getCurrentHP() {
 
         return health;
+    }
+
+    public String getCurrentCheckpoint() {
+        return currentCheckpoint;
     }
 
     public int getMaxHP() {
@@ -103,6 +109,15 @@ public class Player extends Character {
         return completedPuzzles.contains(puzzleID);
     }
 
+    public boolean hasItem(String itemName) {
+        for (Item item : inventory) {
+            if (item.getItemName().equalsIgnoreCase(itemName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public int getEffectiveAttackPower() {
         Random rand = new Random();
         int roll = rand.nextInt(100); // 0–99
@@ -114,9 +129,9 @@ public class Player extends Character {
     }
 
     //Setter to change players current room
-    public void setCurrentRoom(Room newRoom) {
+    public void setCurrentRoom(Room currentRoom) {
 
-        this.currentRoom = newRoom;
+        this.currentRoom = currentRoom;
     }
 
     //Method to move player in direction
@@ -255,6 +270,12 @@ public class Player extends Character {
             for (Item item : inventory) {
                 System.out.println(item.getItemName() + ":" + item.getItemDescription());
             }
+            if (!collectedKey.isEmpty()) {
+                System.out.println("Keys: ");
+                for (String key : collectedKey) {
+                    System.out.println("- " + key);
+                }
+            }
         }
     }
 
@@ -327,18 +348,20 @@ public class Player extends Character {
 //    }
 
 
-    public void heal(String itemName) { //suggestion
+    public void heal(String itemName) {
         for (Item item : inventory) {
             if (item instanceof Consumable) {
                 Consumable consumable = (Consumable) item;
-                //health += consumable.getItemHP(); // No cap on health
-                health = Math.min(maxHP, health + ((Consumable) item).getHealingPoints());
-                inventory.remove(consumable); // Remove the consumable after use
-                System.out.println("You healed " + consumable.getHealingPoints() + " HP. Current HP: " + health);
-            } else {
-                System.out.println("No healing item found in inventory.");
+                if (item.getItemName().equalsIgnoreCase(itemName)) {
+                    //health += consumable.getItemHP(); // No cap on health
+                    health = Math.min(maxHP, health + consumable.getHealingPoints());
+                    inventory.remove(consumable); // Remove after use
+                    System.out.println("You healed " + consumable.getHealingPoints() + " HP. Current HP: " + health);
+                    return;
+                }
             }
         }
+        System.out.println("No healing item found in inventory.");
     }
 
     public void handleMovement(String command, GameMap gameMap) {
@@ -406,6 +429,10 @@ public class Player extends Character {
 
     public void setHealth(int health) {
         this.health = Math.min(health, maxHP);
+    }
+
+    public void setCurrentCheckpoint(String checkpoint) {
+        this.currentCheckpoint = checkpoint;
     }
 }
 
