@@ -42,7 +42,8 @@ public class GameController {
 
         switch (command) {
             case "move":
-                player.handleMovement(argument, gameMap);
+                if (!inCombat) player.handleMovement(argument, gameMap);
+                else System.out.println("You can't move while in combat!");
                 break;
             case "look":
                 player.look();
@@ -70,6 +71,12 @@ public class GameController {
                 break;
             case "fish":
                 handleFishing();
+                break;
+            case "attack":
+                handleCombat();
+                break;
+            case "flee":
+                handleFlee();
                 break;
             case "help":
                 view.showHelp();
@@ -118,6 +125,53 @@ public class GameController {
             }
         }
         System.out.println("You don't have a fishing rod!");
+    }
+
+    private void handleCombat() {
+        Room room = player.getCurrentRoom();
+        if (!room.hasEnemy()) {
+            System.out.println("There are no enemies in this room.");
+            return;
+        }
+
+        inCombat = true;
+        Enemy enemy = room.getEnemies().get(0);
+
+        System.out.println("You engage " + enemy.getName() + " in combat!");
+
+        while (player.isAlive() && enemy.isAlive()) {
+            enemy.takeDamage(player.getEffectiveAttackPower());
+            if (!enemy.isAlive()) break;
+            int dmg = enemy.getAttackPower();
+            player.takeDamage(dmg);
+            System.out.println(enemy.getName() + " attacks for " + dmg + " damage!");
+        }
+
+        if (!player.isAlive()) {
+            System.out.println(enemy.getLoseText());
+        } else if (!enemy.isAlive()) {
+            System.out.println(enemy.getWinText());
+            player.addDefeatedEnemy(enemy.getEnemyID());
+            room.removeEnemy(enemy);
+            player.unEquipItem();
+        }
+
+        inCombat = false;
+    }
+
+    private void handleFlee() {
+        if (!inCombat) {
+            System.out.println("You're not in combat.");
+            return;
+        }
+
+        Room room = player.getCurrentRoom();
+        Enemy enemy = room.getEnemies().get(0);
+        System.out.println(enemy.getFleeText());
+        player.takeDamage(2); // flee penalty
+
+        inCombat = false;
+        System.out.println("You fled the battle.");
     }
 
     public void help (){
