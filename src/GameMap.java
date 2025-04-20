@@ -119,6 +119,8 @@ public class GameMap {
         } //end try
     } //end loadPuzzles
 
+
+
     //method to load characters from file
     public void loadCharacters(String file) throws FileNotFoundException {
         String line;
