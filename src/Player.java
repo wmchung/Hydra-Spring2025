@@ -203,7 +203,7 @@ public class Player extends Character {
 //    }
 //    //Method to drop item
 
-    public void inspectItem(Item item) {
+    public void examineItem(Item item) {
         if (inventory.contains(item)) {
             System.out.println("Item: " + item.getItemDescription());
             if (item instanceof Consumable) {
@@ -212,7 +212,7 @@ public class Player extends Character {
                 System.out.println("Item Attack Points: " + ((Weapon) item).getAttackPower());
             }
         }
-    }//end inspectItem
+    }//end examineItem
 
     public void dropItem(String itemName) {
         Iterator<Item> iterator = inventory.iterator();
@@ -308,18 +308,48 @@ public class Player extends Character {
 //        }
 //        System.out.println("No healing item found in inventory");
 //    }
+
+
     public void heal(String itemName) { //suggestion
         for (Item item : inventory) {
-         if (item instanceof Consumable) {
-            Consumable consumable = (Consumable) item;
-            //health += consumable.getItemHP(); // No cap on health
-            health = Math.min(maxHP, health + ((Consumable) item).getHealingPoints());
-            inventory.remove(consumable); // Remove the consumable after use
-            System.out.println("You healed " + consumable.getHealingPoints() + " HP. Current HP: " + health);
-        } else {
-            System.out.println("No healing item found in inventory.");
-         }
-     }
+            if (item instanceof Consumable) {
+                Consumable consumable = (Consumable) item;
+                //health += consumable.getItemHP(); // No cap on health
+                health = Math.min(maxHP, health + ((Consumable) item).getHealingPoints());
+                inventory.remove(consumable); // Remove the consumable after use
+                System.out.println("You healed " + consumable.getHealingPoints() + " HP. Current HP: " + health);
+            } else {
+                System.out.println("No healing item found in inventory.");
+            }
+        }
     }
 
+    public void handleMovement(String command, GameMap gameMap) {
+        String direction = gameMap.mapDirection(command);
+        Room nextRoom = gameMap.getRoomInDirection(this.currentRoom, direction);
+        if (nextRoom != null && !nextRoom.isLocked()) {
+            this.setCurrentRoom(nextRoom);
+            nextRoom.checkVisitedRoom();
+            nextRoom.hasPuzzle();
+        } else {
+            System.out.println("You can't go that way");
+        }
+    }
+
+    public void talkToNPC(String npcId) {
+        if (currentRoom.hasNPC()) {
+            for (NPC npc : currentRoom.getNpcs()) {
+                if (npc.getNpcId().equalsIgnoreCase(npcId)) {
+                    System.out.println(npc.getInteraction());
+                    return;
+                }
+            }
+        } else {
+            System.out.println("No NPCs in this room.");
+        }
+    }
+
+    public void run() {
+
+    }
 }
