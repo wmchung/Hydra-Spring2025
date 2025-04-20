@@ -143,7 +143,7 @@ public class Room {
         return false;
     }
 
-    public boolean hasEnemy(String enemy) {
+    public boolean hasEnemy() {
         return enemies != null && !enemies.isEmpty();
     }
 
@@ -153,6 +153,10 @@ public class Room {
 
     public boolean hasItem() {
         return items != null && !items.isEmpty();
+    }
+
+    public boolean hasNPC() {
+        return npcs != null && !npcs.isEmpty();
     }
 }
 

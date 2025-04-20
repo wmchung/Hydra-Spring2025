@@ -370,6 +370,7 @@ public class Player extends Character {
 
     }
 
+
     public void look() {
         currentRoom.checkVisitedRoom();
 
@@ -399,3 +400,4 @@ public class Player extends Character {
         }
     }
 }
+

@@ -71,6 +71,10 @@ public class GameMap {
                     String itemRegion = parts[6];
 
                     // Create item based on type
+                    if (itemType.equalsIgnoreCase("none") && itemID.endsWith("K")) {
+                        Item puzzleKey = new Item(itemID, itemName, itemDescription, itemType, itemRegion);
+                        items.add(puzzleKey);
+                    }
                     if (itemType.equalsIgnoreCase("Weapon")) {
                         Weapon weapon = new Weapon(itemID, itemName, itemDescription, itemType, itemRegion, itemAttribute, uses);
                         items.add(weapon);
