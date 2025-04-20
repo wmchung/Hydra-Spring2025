@@ -38,6 +38,10 @@ public class Puzzle {
         return puzzleRoomId;
     }
 
+    public String getSolution() {
+        return solution;
+    }
+
     public String getDescription() {
         return description;
     }

@@ -12,23 +12,34 @@ public class SaveSystem {
 
             writer.write("Rooms\n");
             for (Room room : rooms) {
-                writer.write(room.getRoomId() + "~" + room.isVisited() + "~" + room.isLocked() + "~" + room.isCheckpoint() + "\n");
+                writer.write(room.getRoomId() + "~" + room.getRoomArea() + "~" + room.getRoomType() + "~" +
+                        room.getDescription() + "~" + room.getExits() + "~" + room.getItems() + "~" +
+                        room.getPuzzles() + "~" + room.getEnemies() + "~" + room.getNpcs() + "~" + room.isVisited() +
+                        "~" + room.isLocked() + "~" + room.isCheckpoint() + "\n");
                 for (Puzzle puzzle : room.getPuzzles()) {
-                    writer.write("Puzzle~" + puzzle.getPuzzleId() + "~" + puzzle.isPuzzleSolved() + "\n");
+                    writer.write("Puzzle~" + puzzle.getArea() + "~" + puzzle.getPuzzleId() + "~" + puzzle.getPuzzleRoomId() +
+                            "~" + puzzle.getDescription() + "~" + puzzle.getSolution() + "~" + puzzle.getCompletionMessage()
+                            + "~" + puzzle.getFailureMessage() + "~" + puzzle.getRequiredItem() + "~" + puzzle.getDamageOnFailure()
+                            + "~" + puzzle.getAttempts() + "~" + puzzle.isPuzzleSolved() + "\n");
                 }
                 for (NPC npc : room.getNpcs()) {
-                    writer.write("NPC~" + npc.getNpcId() + "~" + npc.getInteraction() + "\n");
+                    writer.write("NPC~" + npc.getNpcId() + "~" + npc.getDescription() + "~" +  npc.getRegion() + "~" +
+                            npc.getInteraction() + "\n");
                 }
             }
 
             writer.write("Items\n");
             for (Item item : items) {
-                writer.write(item.getItemID() + "~" + item.getName() + "~" + item.getItemDescription() + "\n");
+                writer.write(item.getItemID() + "~" + item.getName() + "~" + item.getItemDescription() +
+                        "~" + item.getTag() + "~" + item.getRoomID() + "~" + item.getItemDescription() + "~" + item.isEquipped() + "\n");
             }
 
             writer.write("Enemies\n");
             for (Enemy enemy : enemies) {
-                writer.write(enemy.getEnemyID() + "~" + enemy.getHealth() + "~" + enemy.isDefeated() + "\n");
+                writer.write(enemy.getEnemyID() + "~" + enemy.getName() + "~" + enemy.getRegion() + "~" +
+                         "~" + enemy.getRoomID() + "~" + enemy.getHealth() + "~" + enemy.getAttackPower() + "~" +
+                         "~" + enemy.getThreshold() + "~" + enemy.getFleeText() + "~" + enemy.getWinText() + "~"
+                        + "~" + enemy.getLoseText() + "~" + enemy.isDefeated() + "\n");
             }
         }
     }
@@ -49,30 +60,33 @@ public class SaveSystem {
                     while (!(line = reader.readLine()).equals("Items")) {
                         if (line.startsWith("Puzzle")) {
                             String[] puzzleData = line.split("~");
-                            Puzzle puzzle = new Puzzle(puzzleData[1], "Puzzle Description", Boolean.parseBoolean(puzzleData[2]));
+                            Puzzle puzzle = new Puzzle(puzzleData[1], puzzleData[2], puzzleData[3], puzzleData[4],
+                                    puzzleData[5], puzzleData[6], puzzleData[7], puzzleData[8], Integer.parseInt(puzzleData[9]),
+                                    Integer.parseInt(puzzleData[10]));
                             currentRoom.addPuzzle(puzzle);
                         } else if (line.startsWith("NPC")) {
                             String[] npcData = line.split("~");
-                            NPC npc = new NPC(npcData[1], npcData[2], npcData[3]);
+                            NPC npc = new NPC(npcData[1], npcData[2], npcData[3], npcData[4]);
                             currentRoom.addNpc(npc);
                         } else {
                             String[] roomData = line.split("~");
-                            currentRoom = new Room(roomData[0], "Room Description", Boolean.parseBoolean(roomData[1]), Boolean.parseBoolean(roomData[2]));
-                            currentRoom.setCheckpoint(Boolean.parseBoolean(roomData[3]));
+                            currentRoom = new Room(roomData[0], roomData[1], roomData[2], roomData[3]);
                             gameMap.rooms.add(currentRoom);
                         }
                     }
                 } else if (line.equals("Items")) {
                     while (!(line = reader.readLine()).equals("Enemies")) {
                         String[] itemData = line.split("~");
-                        Item item = new Item(itemData[0], itemData[1], itemData[2]);
+                        Item item = new Item(itemData[0], itemData[1], itemData[2], itemData[3], (itemData[4]));
                         gameMap.items.add(item);
                     }
                 } else if (line.equals("Enemies")) {
                     while ((line = reader.readLine()) != null) {
                         String[] enemyData = line.split("~");
-                        Enemy enemy = new Enemy(enemyData[0], Integer.parseInt(enemyData[1]), "Enemy Description");
-                        enemy.setDefeated(Boolean.parseBoolean(enemyData[2]));
+                        Enemy enemy = new Enemy(enemyData[0], enemyData[1], enemyData[2], enemyData[3],
+                                Integer.parseInt(enemyData[4]), enemyData[5], Integer.parseInt(enemyData[6]),
+                                enemyData[7], enemyData[8], enemyData[9]);
+                        enemy.setDefeated(Boolean.parseBoolean(enemyData[10]));
                         gameMap.enemies.add(enemy);
                     }
                 }
