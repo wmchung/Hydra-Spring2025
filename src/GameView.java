@@ -35,11 +35,28 @@ public class GameView {
         System.out.println("- pickup <item name>");
         System.out.println("- drop <item name>");
         System.out.println("- solve <puzzleID> <solution>");
-        System.out.println("- status");
+        System.out.println("- fish");
+        System.out.println("- help");
         System.out.println("- quit");
     }
 
     public void showExitMessage() {
         System.out.println("Thanks for playing Trials of the Golden Gummy. Goodbye!");
+    }
+
+    public void showVictory() {
+        System.out.println("\nYou’ve defeated the final challenge and won the game!");
+    }
+
+    public void showGameOver() {
+        System.out.println("\nGame Over. Better luck next time!");
+    }
+
+    // Optional: Move puzzle status logic here if you want
+    public void showPuzzleStatus() {
+        for (Puzzle puzzle : player.getCurrentRoom().getPuzzles()) {
+            String status = puzzle.isPuzzleSolved() ? "Solved" : "Not Solved";
+            System.out.println("Puzzle: " + puzzle.getPuzzleId() + " - " + status);
+        }
     }
 }
