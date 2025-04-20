@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -82,6 +85,10 @@ public class GameController {
                 view.showHelp();
                 view.showPuzzleStatus();
                 break;
+            case "save":
+                handleSave();
+            case "load":
+                handleLoad();
             case "quit":
                 view.showExitMessage();
                 System.exit(0);
@@ -172,6 +179,47 @@ public class GameController {
 
         inCombat = false;
         System.out.println("You fled the battle.");
+    }
+
+    private void handleSave() {
+        if (inCombat) {
+            System.out.println("You cannot save while in combat!");
+            return;
+        }
+
+        String currentRoomId = player.getCurrentRoom().getRoomId();
+        if (!currentRoomId.equals("AR01") && !currentRoomId.equals("AR02") && !currentRoomId.equals("AR03")) {
+            System.out.println("You can only save in armory rooms");
+            return;
+        }
+
+        SaveSystem saveSystem = new SaveSystem();
+        try {
+            //access the fields of gameMap, might not work
+            saveSystem.saveGame(gameMap.rooms, gameMap.items, gameMap.enemies, player);
+            System.out.println("Game saved successfully");
+        } catch (IOException ioe) {
+            System.out.println("Failed to save the game: " + ioe.getMessage());
+        }
+    }
+
+    private void handleLoad() {
+        SaveSystem saveSystem = new SaveSystem();
+        File saveFile = new File("savegame.txt");
+
+        if (!saveFile.exists()) {
+            System.out.println("No save file found. Start a new game.");
+            return;
+        }
+
+        try {
+            saveSystem.loadGame(gameMap, player); //may need to be adjusted
+            System.out.println("Game loaded successfully");
+        } catch (IOException ioe) {
+            System.out.println("Failed to load the game: " + ioe.getMessage());
+        } catch (NoSuchElementException nse) {
+            System.out.println("Save file is corrupted or incomplete.");
+        }
     }
 
     public void help (){

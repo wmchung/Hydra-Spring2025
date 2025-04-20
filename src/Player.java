@@ -399,5 +399,13 @@ public class Player extends Character {
             }
         }
     }
+
+    public void setName(String playerName) {
+        this.name = playerName;
+    }
+
+    public void setHealth(int health) {
+        this.health = Math.min(health, maxHP);
+    }
 }
 
