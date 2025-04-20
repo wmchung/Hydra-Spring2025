@@ -158,6 +158,14 @@ public class Room {
     public boolean hasNPC() {
         return npcs != null && !npcs.isEmpty();
     }
+
+    public void setVisited(boolean isVisited) {
+        this.visited = isVisited;
+    }
+
+    public void setLocked(boolean isLocked) {
+        this.locked = isLocked;
+    }
 }
 
 

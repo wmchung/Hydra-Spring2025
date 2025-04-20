@@ -4,17 +4,15 @@
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class GameMap {
-    private ArrayList<Room> rooms;
-    private ArrayList<Item> items;
-    private ArrayList<Puzzle> puzzles;
-    private ArrayList<Character> characters;
-    private ArrayList<NPC> npcs;
+     List<Enemy> enemies;
+     List<Room> rooms;
+     List<Item> items;
+     List<Puzzle> puzzles;
+     List<Character> characters;
+     List<NPC> npcs;
 
     public GameMap() {
         rooms = new ArrayList<>();

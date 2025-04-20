@@ -45,6 +45,10 @@ public abstract class Character {
     public void flee() {
         System.out.println(this.name + " attempts to flee from battle!");
     }
+
+    public boolean isDefeated() {
+        return health <= 0;
+    }
 }
 
 

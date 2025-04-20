@@ -37,6 +37,8 @@ public class GameView {
         System.out.println("- solve <puzzleID> <solution>");
         System.out.println("- fish");
         System.out.println("- help");
+        System.out.println("- save");
+        System.out.println("- load");
         System.out.println("- quit");
     }
 
