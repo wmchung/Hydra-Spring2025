@@ -58,7 +58,7 @@ public class Player extends Character {
         return maxHP;
     }
 
-//    @Override
+    //    @Override
 //    public int getAttackPower(String itemName) {
 //
 //        Weapon weapon = (Weapon) equippedItem;
@@ -369,4 +369,35 @@ public class Player extends Character {
     public void run() {
 
     }
+
+
+    public void look() {
+        currentRoom.checkVisitedRoom();
+
+        if (!currentRoom.getItems().isEmpty()) {
+            System.out.println("Items in the room:");
+            for (Item item : currentRoom.getItems()) {
+                System.out.println("- " + item.getItemName());
+            }
+        }
+
+        if (!currentRoom.getEnemies().isEmpty()) {
+            System.out.println("Enemies nearby:");
+            for (Enemy enemy : currentRoom.getEnemies()) {
+                System.out.println("- " + enemy.getName());
+            }
+        }
+
+        if (!currentRoom.getPuzzles().isEmpty()) {
+            System.out.println("There seems to be a puzzle here.");
+        }
+
+        if (!currentRoom.getNpcs().isEmpty()) {
+            System.out.println("You notice:");
+            for (NPC npc : currentRoom.getNpcs()) {
+                System.out.println("- " + npc.getNpcId());
+            }
+        }
+    }
 }
+
