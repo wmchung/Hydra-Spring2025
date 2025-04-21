@@ -1,3 +1,5 @@
+package Model;
+
 /**
  * Items:
  * Define item properties: Items can be consumables, weapons, keys, or artifacts, each having unique traits such as value and effects.

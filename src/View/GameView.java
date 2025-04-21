@@ -1,4 +1,4 @@
-// GameView.java
+package View;// GameView.java
 import java.util.Scanner;
 import java.util.List;
 
@@ -37,6 +37,8 @@ public class GameView {
         System.out.println("- drop <item name>");
         System.out.println("- solve <puzzleID> <solution>");
         System.out.println("- fish");
+        System.out.println("- attack");
+        System.out.println("- flee");
         System.out.println("- help");
         System.out.println("- save");
         System.out.println("- load");
@@ -55,10 +57,4 @@ public class GameView {
         System.out.println("\nGame Over. Better luck next time!");
     }
 
-    public void showPuzzleStatus(List<Puzzle> puzzles) {
-        for (Puzzle puzzle : puzzles) {
-            String status = puzzle.isPuzzleSolved() ? "Solved" : "Not Solved";
-            System.out.println("Puzzle: " + puzzle.getPuzzleId() + " - " + status);
-        }
-    }
 }

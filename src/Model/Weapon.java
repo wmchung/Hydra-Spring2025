@@ -1,3 +1,5 @@
+package Model;
+
 public class Weapon extends Item {
     private int damagePoints;
     private int amount;

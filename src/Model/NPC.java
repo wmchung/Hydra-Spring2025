@@ -1,3 +1,5 @@
+package Model;
+
 public class NPC {
     private String npcId;
     private String description;

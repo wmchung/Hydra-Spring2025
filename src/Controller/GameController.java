@@ -1,6 +1,13 @@
+package Controller;
+
+import Model.*;
+import View.GameView;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -11,8 +18,7 @@ public class GameController {
     private GameView view;
     private boolean inCombat;
 
-    public GameController(Player player, GameView view) {
-        this.gameMap = new GameMap();
+    public GameController(Player player, GameView view) throws FileNotFoundException {
         this.player = player;
         this.view = view;  //new GameView();
         this.inCombat = false;
@@ -45,7 +51,7 @@ public class GameController {
 
         switch (command) {
             case "move":
-                if (!inCombat) player.move(argument);
+                if (!inCombat) player.handleMovement(argument);
                 else System.out.println("You can't move while in combat!");
                 break;
             case "look":
@@ -83,7 +89,7 @@ public class GameController {
                 break;
             case "help":
                 view.showHelp();
-                view.showPuzzleStatus(player.getCurrentRoom().getPuzzles());
+                showPuzzleStatus(player.getCurrentRoom().getPuzzles());
                 break;
             case "save":
                 handleSave();
@@ -164,7 +170,7 @@ public class GameController {
             }
         }
 
-        Room finalBossRoom = gameMap.getRoomById("FB");
+        Room finalBossRoom = gameMap.getRoom("FB");
         if (finalBossRoom != null) {
             finalBossRoom.setLocked(false);
             System.out.println("The door unlocks! You now have access to the final boss room.");
@@ -244,8 +250,7 @@ public class GameController {
 
         SaveSystem saveSystem = new SaveSystem();
         try {
-            saveSystem.saveGame(gameMap.rooms, gameMap.items, gameMap.enemies, player);
-            System.out.println("Game saved successfully.");
+            saveSystem.saveGame(new ArrayList<>(gameMap.rooms.values()), gameMap.items, gameMap.enemies, player);            System.out.println("Game saved successfully.");
         } catch (IOException ioe) {
             System.out.println("Failed to save the game: " + ioe.getMessage());
         }
@@ -263,7 +268,7 @@ public class GameController {
         try {
             saveSystem.loadGame(gameMap, player);
             String checkpointId = player.getCurrentCheckpoint();
-            Room checkpointRoom = gameMap.getRoomById(checkpointId);
+            Room checkpointRoom = gameMap.getRoom(checkpointId);
             if (checkpointRoom != null) {
                 player.setCurrentRoom(checkpointRoom);
                 System.out.println("Game loaded successfully. You are at checkpoint: " + checkpointId);
@@ -282,7 +287,7 @@ public class GameController {
         String roomId = currentRoom.getRoomId();
 
         System.out.println("\n=== HELP MENU ===");
-        System.out.println("Current Room: " + roomId + " - " + currentRoom.getRoomType());
+        System.out.println("Current Model.Room: " + roomId + " - " + currentRoom.getRoomType());
         System.out.println(currentRoom.getDescription());
 
         // Final boss room context
@@ -292,24 +297,31 @@ public class GameController {
             System.out.println("Make sure you are equipped with your best weapon and fully healed.");
         }
 
-        // Puzzle status (in current room)
+        // Model.Puzzle status (in current room)
         if (currentRoom.getPuzzles().isEmpty()) {
             System.out.println("\nNo puzzles in this room.");
         } else {
-            System.out.println("\nPuzzle Status:");
+            System.out.println("\nModel.Puzzle Status:");
             for (Puzzle puzzle : currentRoom.getPuzzles()) {
                 String status = puzzle.isPuzzleSolved() ? "Solved!" : "Not solved.";
-                System.out.println("- Puzzle in Room '" + puzzle.getPuzzleRoomId() + "': " + status);
+                System.out.println("- Model.Puzzle in Model.Room '" + puzzle.getPuzzleRoomId() + "': " + status);
             }
         }
 
         // Optional: equipped item + health
-        System.out.println("\nPlayer Status:");
+        System.out.println("\nModel.Player Status:");
         System.out.println("- Health: " + player.getHealth());
         Item equipped = player.getEquippedItem();
-        System.out.println("- Equipped Item: " + (equipped != null ? equipped.getItemName() : "None"));
+        System.out.println("- Equipped Model.Item: " + (equipped != null ? equipped.getItemName() : "None"));
 
         System.out.println("=======================");
+    }
+
+    public void showPuzzleStatus(List<Puzzle> puzzles) {
+        for (Puzzle puzzle : puzzles) {
+            String status = puzzle.isPuzzleSolved() ? "Solved" : "Not Solved";
+            System.out.println("Model.Puzzle: " + puzzle.getPuzzleId() + " - " + status);
+        }
     }
 
 }

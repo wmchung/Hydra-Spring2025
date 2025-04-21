@@ -1,3 +1,5 @@
+package Model;
+
 public class BufferItem extends Item {
     //buffs players damage
     //buffs players health capacity

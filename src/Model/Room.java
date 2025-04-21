@@ -1,3 +1,5 @@
+package Model;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +14,7 @@ public class Room {
     private boolean locked;
     private boolean checkpoint;
     private String keyItem;
-    private Map<String, String> exits;
+    private Map<String, Room> exits;
     //private Map<String, Item> items = new HashMap<>();//Item Name and description
     private List<Item> items;
     private List<Enemy> enemies;
@@ -67,7 +69,7 @@ public class Room {
         return locked;
     }
 
-    public Map<String, String> getExits() {
+    public Map<String, Room> getExits() {
         return exits;
     }
 
@@ -88,11 +90,8 @@ public class Room {
     }
 
     // Methods to add elements
-    public void addExit(String direction, String roomId) {
-        if (direction != null && roomId != null) {
-            exits.put(direction, roomId);
-            System.out.println("Debug: Room " + this.roomId + " exits updated: " + exits);
-        }
+    public void addExit(String direction, Room room) {
+        exits.put(direction.toUpperCase(), room); // Store direction in uppercase for consistency
     }
     public void addItem(Item item) {
         items.add(item);
@@ -128,17 +127,15 @@ public class Room {
     }
 
     // Mark room as visited
-    public void visit() {
-        this.visited = true;
-    }
 
     public void checkVisitedRoom() {
-        if (this.isVisited()) {
+        if (visited) {
             System.out.println("You've been here before.");
+            System.out.println(this.getDescription());
+        } else {
+            System.out.println(this.getDescription());
+            visited = true;
         }
-        this.visit();
-        System.out.println(this.getDescription());
-        System.out.println();
     }
 
     public boolean unlock(String item) {
@@ -184,4 +181,5 @@ public class Room {
     public void setCheckpoint(boolean checkpoint) {
         this.checkpoint = checkpoint;
     }
+
 }
