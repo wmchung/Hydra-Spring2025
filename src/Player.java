@@ -20,24 +20,12 @@ public class Player extends Character {
     private GameMap gameMap;
 
     //constructor to initialize player with a name and starting room
-    public Player(String name, int health, int attackPower, Room startingRoom) {
+    public Player(String name, int health, int attackPower, Room startingRoom, GameMap gameMap) {
         super(name, health, attackPower);
-        gameMap = new GameMap();
-        this.currentRoom = gameMap.getRoomById("SR01");
-        this.maxHP = health;
-        this.isAlive = true;
-        this.hasWon = false;
-        this.inventory = new ArrayList<>();
-        this.defeatedEnemies = new ArrayList<>();
-        this.completedPuzzles = new ArrayList<>();
-        this.buffAmount = 0;
-        this.collectedKey = new HashSet<>();
-        this.currentCheckpoint = null;
-
-
-        System.out.println("Debug: Player starting room: " + this.currentRoom.getRoomId());
-        System.out.println("Debug: Player starting room exits: " + this.currentRoom.getExits());
+        this.gameMap = gameMap;
+        this.currentRoom = startingRoom;
     }
+
 
     //Getters
 

@@ -87,8 +87,10 @@ public class GameController {
                 break;
             case "save":
                 handleSave();
+                break;
             case "load":
                 handleLoad();
+                break;
             case "quit":
                 view.showExitMessage();
                 System.exit(0);
