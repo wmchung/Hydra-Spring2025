@@ -182,30 +182,38 @@ public class GameMap {
 
         if (parts.length < 9) {
             throw new IllegalArgumentException("Invalid room data: " + line);
-        } //validate rooms are parsing correctly
+        }
 
         String roomId = parts[0];
         String roomArea = parts[1];
         String roomType = parts[2];
         String roomDesc = parts[3];
         Room room = new Room(roomId, roomArea, roomType, roomDesc);
-        //System.out.println("Parsing room " + roomId); //debug statement
 
+        // Debug: Room initialization
+        System.out.println("Debug: Parsing room " + roomId);
+
+        // Parse exits
         if (!parts[4].equals("0")) {
             String[] exits = parts[4].split(",");
             for (String exit : exits) {
                 if (!exit.isEmpty()) {
-                    // Split on the colon to separate direction and room ID
                     String[] exitParts = exit.split(":");
                     if (exitParts.length == 2) {
                         String direction = mapDirection(exitParts[0]); // Convert N to NORTH, etc.
                         String nextRoomId = exitParts[1];
                         room.addExit(direction, nextRoomId);
-                        //System.out.println("Exit added " + direction + " -> " + nextRoomId); //debug statement
+
+                        // Debug: Exit added
+                        System.out.println("Debug: Exit added to room " + roomId + " - " + direction + " -> " + nextRoomId);
+                    } else {
+                        System.err.println("Error: Invalid exit format in room " + roomId + ": " + exit);
                     }
                 }
             }
-        }//end room parse
+        } else {
+            System.out.println("Debug: No exits for room " + roomId);
+        }
 
 
         if (!parts[5].equals("0")) {
@@ -278,10 +286,11 @@ public class GameMap {
     public Room getRoomById(String roomId) {
         for (Room room : rooms) {
             if (room.getRoomId().equalsIgnoreCase(roomId)) {
+                System.out.println("Debug: Retrieved room " + roomId + " with exits: " + room.getExits());
                 return room;
             }
         }
-        return null; //return null if no room is found
+        return null; // Return null if no room is found
     }
 
     // Method to determine the next room in a given direction

@@ -91,7 +91,7 @@ public class Room {
     public void addExit(String direction, String roomId) {
         if (direction != null && roomId != null) {
             exits.put(direction, roomId);
-            System.out.println("Debug: Room " + this.roomId + " exits updated: " + exits); // Debug statement
+            System.out.println("Debug: Room " + this.roomId + " exits updated: " + exits);
         }
     }
     public void addItem(Item item) {
