@@ -83,7 +83,7 @@ public class GameController {
                 break;
             case "help":
                 view.showHelp();
-                view.showPuzzleStatus();
+                view.showPuzzleStatus(player.getCurrentRoom().getPuzzles());
                 break;
             case "save":
                 handleSave();
