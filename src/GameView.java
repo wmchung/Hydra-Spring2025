@@ -1,5 +1,6 @@
 // GameView.java
 import java.util.Scanner;
+import java.util.List;
 
 public class GameView {
     private final Scanner scanner;
@@ -54,9 +55,8 @@ public class GameView {
         System.out.println("\nGame Over. Better luck next time!");
     }
 
-    // Optional: Move puzzle status logic here if you want
-    public void showPuzzleStatus() {
-        for (Puzzle puzzle : player.getCurrentRoom().getPuzzles()) {
+    public void showPuzzleStatus(List<Puzzle> puzzles) {
+        for (Puzzle puzzle : puzzles) {
             String status = puzzle.isPuzzleSolved() ? "Solved" : "Not Solved";
             System.out.println("Puzzle: " + puzzle.getPuzzleId() + " - " + status);
         }
