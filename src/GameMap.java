@@ -7,12 +7,12 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class GameMap {
-     public List<Enemy> enemies;
-     public List<Room> rooms;
-     public List<Item> items;
-     public List<Puzzle> puzzles;
-     public List<Character> characters;
-     public List<NPC> npcs;
+    public List<Enemy> enemies;
+    public List<Room> rooms;
+    public List<Item> items;
+    public List<Puzzle> puzzles;
+    public List<Character> characters;
+    public List<NPC> npcs;
 
     public GameMap() {
         this.rooms = new ArrayList<>();
@@ -42,7 +42,7 @@ public class GameMap {
                     try {
                         Room room = parseRoom(line);
                         rooms.add(room);
-                        System.out.println("Room added: " + room); // debug statement
+                        //System.out.println("Room added: " + room); // debug statement
                     } catch (NumberFormatException ex) {
                         System.err.println("Error parsing room data: " + ex.getMessage());
                     }
@@ -96,7 +96,7 @@ public class GameMap {
             input.nextLine(); //skip first line
             while (input.hasNext()) {
                 line = input.nextLine().trim();
-                if(!line.isEmpty()) {
+                if (!line.isEmpty()) {
                     String[] parts = line.split("~", 10);
                     String puzArea = parts[0];
                     String puzId = parts[1];
@@ -116,7 +116,6 @@ public class GameMap {
             }
         } //end try
     } //end loadPuzzles
-
 
 
     //method to load characters from file
@@ -157,7 +156,7 @@ public class GameMap {
     }//end loadCharacters
 
     //method to load npcs from file
-    public void loadNPCs(String file) throws FileNotFoundException{
+    public void loadNPCs(String file) throws FileNotFoundException {
         String line;
         try (Scanner input = new Scanner(new File(file))) {
             input.nextLine();
@@ -190,16 +189,16 @@ public class GameMap {
         String roomType = parts[2];
         String roomDesc = parts[3];
         Room room = new Room(roomId, roomArea, roomType, roomDesc);
-        System.out.println("Parsing room " + roomId); //debug statement
+        //System.out.println("Parsing room " + roomId); //debug statement
 
-        if(!parts[4].equals("0")) {
+        if (!parts[4].equals("0")) {
             String[] exits = parts[4].split(",");
             for (String exit : exits) {
                 if (!exit.isEmpty()) {
                     String direction = exit.substring(0, 2);
                     String nextRoomId = exit.substring(2);
                     room.addExit(direction, nextRoomId);
-                    System.out.println("Exit added " + direction + " - > " + nextRoomId); //debug statement
+                    //System.out.println("Exit added " + direction + " - > " + nextRoomId); //debug statement
                 }
             }
         }//end room parse
@@ -212,7 +211,7 @@ public class GameMap {
                     for (Item item : items) {
                         if (item.getItemID().equalsIgnoreCase(itemId)) {
                             room.addItem(item);
-                            System.out.println("Item added to room: " + item.getItemName()); //debug statement
+                            //System.out.println("Item added to room: " + item.getItemName()); //debug statement
                             break;
                         }
                     }
@@ -227,7 +226,7 @@ public class GameMap {
                     for (Puzzle puzzle : puzzles) {
                         if (puzzle.getPuzzleId().equalsIgnoreCase(puzId)) {
                             room.addPuzzle(puzzle);
-                            System.out.println("Puzzle added to room " + puzId); //debug statement
+                            //System.out.println("Puzzle added to room " + puzId); //debug statement
                             break;
                         }
                     }
@@ -239,10 +238,10 @@ public class GameMap {
             String[] roomCharacters = parts[7].split("~");
             for (String enemyId : roomCharacters) {
                 if (!enemyId.isEmpty()) {
-                    for (Character enemy : characters ) {
+                    for (Character enemy : characters) {
                         if (enemyId.equals(enemy)) {
                             room.addEnemy((Enemy) enemy);
-                            System.out.println("Character added to room " + enemyId); //debug statement
+                            //System.out.println("Character added to room " + enemyId); //debug statement
                             break;
                         }
                     }
@@ -257,7 +256,7 @@ public class GameMap {
                     for (NPC npc : npcs) {
                         if (npc.getNpcId().equalsIgnoreCase(npcId)) {
                             room.addNpc(npc);
-                            System.out.println("NPC added to room: " + npcId);
+                            //System.out.println("NPC added to room: " + npcId);
                             break;
                         }
                     }
@@ -286,6 +285,7 @@ public class GameMap {
         if (nextRoomId != null) {
             return getRoomById(nextRoomId); //find and return the next room
         }
+        System.out.println("Debug: No exit in direction " + direction + " from room " + currentRoom.getRoomId());
         return null; //return null if no room exists in the given direction
     }
 
@@ -296,8 +296,7 @@ public class GameMap {
         directionMap.put("E", "EAST");
         directionMap.put("S", "SOUTH");
         directionMap.put("W", "WEST");
-        return directionMap.get(input);
+        return directionMap.get(input.toUpperCase());
     } //end mapDirection
-
 } //end GameMap class
 

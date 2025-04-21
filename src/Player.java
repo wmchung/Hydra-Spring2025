@@ -366,15 +366,49 @@ public class Player extends Character {
 
     public void handleMovement(String command, GameMap gameMap) {
         String direction = gameMap.mapDirection(command);
+        if (direction == null) {
+            System.out.println("Invalid direction.");
+            return;
+        }
+
         Room nextRoom = gameMap.getRoomInDirection(this.currentRoom, direction);
         if (nextRoom != null && !nextRoom.isLocked()) {
             this.setCurrentRoom(nextRoom);
             nextRoom.checkVisitedRoom();
             nextRoom.hasPuzzle();
         } else {
-            System.out.println("You can't go that way");
+            System.out.println("Debug: No exit in direction " + direction + " from room " + this.currentRoom.getRoomId());
+            System.out.println("Available exits: " + this.currentRoom.getExits().keySet());
+            System.out.println("You can't go that way.");
         }
     }
+
+//    public void handleMovement(String command, GameMap gameMap) {
+//        String direction = gameMap.mapDirection(command);
+//        if (direction == null) {
+//            System.out.println("Invalid direction.");
+//            return;
+//        }
+//        Room nextRoom = gameMap.getRoomInDirection(this.currentRoom, direction);
+//        if (nextRoom != null && !nextRoom.isLocked()) {
+//            this.setCurrentRoom(nextRoom);
+//            nextRoom.checkVisitedRoom();
+//            nextRoom.hasPuzzle();
+//        } else {
+//            System.out.println("You can't go that way.");
+//        }
+//    }
+//    public void handleMovement(String command, GameMap gameMap) {
+//        String direction = gameMap.mapDirection(command);
+//        Room nextRoom = gameMap.getRoomInDirection(this.currentRoom, direction);
+//        if (nextRoom != null && !nextRoom.isLocked()) {
+//            this.setCurrentRoom(nextRoom);
+//            nextRoom.checkVisitedRoom();
+//            nextRoom.hasPuzzle();
+//        } else {
+//            System.out.println("You can't go that way");
+//        }
+//    }
 
     public void talkToNPC(String npcId) {
         if (currentRoom.hasNPC()) {

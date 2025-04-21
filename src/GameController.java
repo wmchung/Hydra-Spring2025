@@ -11,10 +11,10 @@ public class GameController {
     private GameView view;
     private boolean inCombat;
 
-    public GameController(GameMap gameMap, Player player) {
+    public GameController(Player player, GameView view) {
         this.gameMap = new GameMap();
         this.player = player;
-        this.view = new GameView();
+        this.view = view;  //new GameView();
         this.inCombat = false;
     }
 
