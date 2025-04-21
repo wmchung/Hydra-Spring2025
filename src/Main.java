@@ -13,7 +13,7 @@ public class Main {
             Room startingRoom = gameMap.getRoomById("SR01");
 
             // Initialize the player with the starting room
-            Player player = new Player("Hero", 100, 10, startingRoom);
+            Player player = new Player("Hero", 100, 10, startingRoom, gameMap);
 
             // Initialize game components
             GameView gameView = new GameView();
