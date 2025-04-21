@@ -1,17 +1,19 @@
-import javax.swing.*;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
         GameMap gameMap = new GameMap();
-        Room startingRoom = new Room("SR01", "General", "Starting Room", "You wake up in a small, dimly lit room. The dark grey walls are cracked with age. Three doors come into focus around you.");
-        Player player = new Player("Hero", 100, 10, startingRoom);
 
         try {
             // Load game data from files
             gameMap.loadGameData("item.txt", "puzzles.txt", "Enemy.txt", "NPC.txt", "Map.txt");
             System.out.println("All files loaded successfully.");
+
+            // Initialize the starting room
+            Room startingRoom = gameMap.getRoomById("SR01");
+
+            // Initialize the player with the starting room
+            Player player = new Player("Hero", 100, 10, startingRoom);
 
             // Initialize game components
             GameView gameView = new GameView();

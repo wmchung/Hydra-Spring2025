@@ -1,4 +1,5 @@
 roomID~roomArea~roomType~roomDescription~nextRoomNumber(exits)~item~puzzle~monster~npcId
+SR01~General~Starting Room~You wake up in a small, dimly lit room. The dark grey walls are cracked with age. Three doors come into focus around you.~N:IE01,S:RP01,W:FP~0~0~0~0
 IR-P01~Island~Puzzle Room~You have found yourself on a beach. Your eyes struggle to adjust to the daylight. No other path is clear, but a shipwreck comes into view.~N:IN01,E:IE01,S:FP,W:H01~FP~0~0~0
 IR-P02~Island~Puzzle Room~You arrive at a tranquil beach with a raft. You see an island a short distance away.~S:IE01,W:IN01~0~IP02~0~0~0
 IR-E01~Island~Enemy Room~This room is dark, but you can hear the crackling of a fire. There is heavy brush around you.~N:IP02,W:IP02,S:SR01~0~0~IE01~0
@@ -22,7 +23,6 @@ AR01~General~Armory Room~You enter a green, carpeted room with three podiums bef
 AR02~General~Armory Room~You enter a green, carpeted room with three podiums before you. Sitting atop them are three items each. One contains health, the second offers protection, and the third offers a weapon.~E:AP~0~0~0~0
 AR03~General~Armory Room~You enter a green, carpeted room with three podiums before you. Sitting atop them are three items each. One contains health, the second offers protection, and the third offers weapons.~N:H03~0~0~0~0
 AP~General~Puzzle Room~You enter a dimly lit chamber. On the pedestal rests an old, dusty book with an inscription: 'To gain the strength of the armory, you must prove your wit and valor.'~E:H02,W:AR02~0~AP~0~0
-SR01~General~Starting Room~You wake up in a small, dimly lit room. The dark grey walls are cracked with age. Three doors come into focus around you.~N:IE01,S:RP01,W:FP~0~0~0~0
 FP~General~Final Puzzle~You step into a vast, circular chamber illuminated by eerie blue light. The walls are covered with ancient runes, and four pedestals stand in the center, each inscribed with an elemental symbol: Water, Fire, Earth, and Air. In the center of the pedestals, a large, ornate door with intricate carvings awaits, sealed with a powerful magical barrier.~N:IP01,S:RE01,W:SR01~0~FP~0~0
 BR-E01~Boss Arena~Final Boss Room~You enter a large, domed coliseum. You hear splashing as you walk. Looking down, you realize it is blood.~E:FP~0~0~FB01~0
 

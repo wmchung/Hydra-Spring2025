@@ -22,7 +22,8 @@ public class Player extends Character {
     //constructor to initialize player with a name and starting room
     public Player(String name, int health, int attackPower, Room startingRoom) {
         super(name, health, attackPower);
-        this.currentRoom = startingRoom;
+        gameMap = new GameMap();
+        this.currentRoom = gameMap.getRoomById("SR01");
         this.maxHP = health;
         this.isAlive = true;
         this.hasWon = false;
@@ -32,7 +33,7 @@ public class Player extends Character {
         this.buffAmount = 0;
         this.collectedKey = new HashSet<>();
         this.currentCheckpoint = null;
-        this.gameMap = new GameMap();
+
 
         System.out.println("Debug: Player starting room: " + this.currentRoom.getRoomId());
         System.out.println("Debug: Player starting room exits: " + this.currentRoom.getExits());
