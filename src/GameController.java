@@ -45,7 +45,7 @@ public class GameController {
 
         switch (command) {
             case "move":
-                if (!inCombat) player.handleMovement(argument, gameMap);
+                if (!inCombat) player.move(argument);
                 else System.out.println("You can't move while in combat!");
                 break;
             case "look":

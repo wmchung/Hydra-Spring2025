@@ -180,7 +180,7 @@ public class GameMap {
     private Room parseRoom(String line) throws IllegalArgumentException {
         String[] parts = line.split("~", 9);
 
-        if (parts.length <= 8) {
+        if (parts.length < 9) {
             throw new IllegalArgumentException("Invalid room data: " + line);
         } //validate rooms are parsing correctly
 
@@ -195,13 +195,18 @@ public class GameMap {
             String[] exits = parts[4].split(",");
             for (String exit : exits) {
                 if (!exit.isEmpty()) {
-                    String direction = exit.substring(0, 2);
-                    String nextRoomId = exit.substring(2);
-                    room.addExit(direction, nextRoomId);
-                    //System.out.println("Exit added " + direction + " - > " + nextRoomId); //debug statement
+                    // Split on the colon to separate direction and room ID
+                    String[] exitParts = exit.split(":");
+                    if (exitParts.length == 2) {
+                        String direction = mapDirection(exitParts[0]); // Convert N to NORTH, etc.
+                        String nextRoomId = exitParts[1];
+                        room.addExit(direction, nextRoomId);
+                        //System.out.println("Exit added " + direction + " -> " + nextRoomId); //debug statement
+                    }
                 }
             }
         }//end room parse
+
 
         if (!parts[5].equals("0")) {
             String itemData = parts[5].replace("~", ""); // Remove enclosing ~ characters
@@ -250,7 +255,7 @@ public class GameMap {
         } //end character parse
 
         if (!parts[8].equals("0")) {
-            String[] roomNPCs = parts[8].split(",");
+            String[] roomNPCs = parts[8].split("~");
             for (String npcId : roomNPCs) {
                 if (!npcId.isEmpty()) {
                     for (NPC npc : npcs) {
@@ -281,12 +286,18 @@ public class GameMap {
 
     // Method to determine the next room in a given direction
     public Room getRoomInDirection(Room currentRoom, String direction) {
-        String nextRoomId = currentRoom.getExits().get(direction); //retrieve the next room number
-        if (nextRoomId != null) {
-            return getRoomById(nextRoomId); //find and return the next room
+        System.out.println("Debug: Current room exits: " + currentRoom.getExits());
+        String targetRoomId = currentRoom.getExits().get(direction);
+        if (targetRoomId == null) {
+            System.out.println("Debug: No exit in direction " + direction);
+            return null;
         }
-        System.out.println("Debug: No exit in direction " + direction + " from room " + currentRoom.getRoomId());
-        return null; //return null if no room exists in the given direction
+        for (Room room : rooms) {
+            if (room.getRoomId().equalsIgnoreCase(targetRoomId)) {
+                return room;
+            }
+        }
+        return null;
     }
 
     //method to convert shorthand direction input to full directions

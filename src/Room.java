@@ -89,9 +89,11 @@ public class Room {
 
     // Methods to add elements
     public void addExit(String direction, String roomId) {
-        exits.put(direction, roomId);
+        if (direction != null && roomId != null) {
+            exits.put(direction, roomId);
+            System.out.println("Debug: Room " + this.roomId + " exits updated: " + exits); // Debug statement
+        }
     }
-
     public void addItem(Item item) {
         items.add(item);
     }
