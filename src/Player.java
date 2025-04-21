@@ -17,6 +17,7 @@ public class Player extends Character {
     private int buffAmount; // Temporary attack buff amount
     private Set<String> collectedKey;
     private String currentCheckpoint;
+    private GameMap gameMap;
 
     //constructor to initialize player with a name and starting room
     public Player(String name, int health, int attackPower, Room startingRoom) {
@@ -31,6 +32,10 @@ public class Player extends Character {
         this.buffAmount = 0;
         this.collectedKey = new HashSet<>();
         this.currentCheckpoint = null;
+        this.gameMap = new GameMap();
+
+        System.out.println("Debug: Player starting room: " + this.currentRoom.getRoomId());
+        System.out.println("Debug: Player starting room exits: " + this.currentRoom.getExits());
     }
 
     //Getters
@@ -133,21 +138,47 @@ public class Player extends Character {
 
         this.currentRoom = currentRoom;
     }
-
-    //Method to move player in direction
-    public void move(String direction, Map<String, Room> rooms) {
-        if (currentRoom.getExits().containsKey(direction)) {
-            String nextRoomId = currentRoom.getExits().get(direction);
-            if (rooms.containsKey(nextRoomId)) {
-                currentRoom = rooms.get(nextRoomId);
-                System.out.println("You moved " + direction + " to " + currentRoom.getRoomId());
-            } else {
-                System.out.println("Room ID " + nextRoomId + " not found in map.");
-            }
-        } else {
-            System.out.println("No exit in that direction.");
+    public void move(String direction) {
+        // Map shorthand direction to full direction
+        String fullDirection = gameMap.mapDirection(direction);
+        if (fullDirection == null) {
+            System.out.println("Invalid direction. Use N, E, S, or W.");
+            return;
         }
+
+        Room currentRoom = this.getCurrentRoom();
+        System.out.println("Debug: Current room: " + currentRoom.getRoomId());
+        System.out.println("Debug: Attempting to move " + fullDirection);
+
+        // Get the next room in the specified direction
+        Room nextRoom = gameMap.getRoomInDirection(currentRoom, fullDirection);
+        if (nextRoom == null) {
+            System.out.println("Debug: No exit in direction " + fullDirection + " from room " + currentRoom.getRoomId());
+            System.out.println("Available exits: " + currentRoom.getExits().keySet());
+            System.out.println("You can't go that way.");
+            return;
+        }
+
+        // Move the player to the next room
+        this.setCurrentRoom(nextRoom);
+        System.out.println("You move " + fullDirection + " to " + nextRoom.getRoomId() + ".");
+        System.out.println(nextRoom.getDescription());
     }
+
+//    //Method to move player in direction
+//    public void move(String direction, Map<String, Room> rooms) {
+//        if (currentRoom.getExits().containsKey(direction)) {
+//            String nextRoomId = currentRoom.getExits().get(direction);
+//            if (rooms.containsKey(nextRoomId)) {
+//                currentRoom = rooms.get(nextRoomId);
+//                System.out.println("You moved " + direction + " to " + currentRoom.getRoomId());
+//            } else {
+//                System.out.println("Room ID " + nextRoomId + " not found in map.");
+//            }
+//        } else {
+//            System.out.println("No exit in that direction.");
+//        }
+//    }
 
     public boolean isAlive() {
         return isAlive;
