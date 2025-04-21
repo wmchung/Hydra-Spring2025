@@ -1,3 +1,5 @@
+package Model;
+
 public class FishingRod extends Item {
     public FishingRod(String itemID, String itemName, String itemDescription, String tag, String location) {
         super(itemID, itemName, itemDescription, tag,location);
@@ -13,7 +15,7 @@ public class FishingRod extends Item {
         if(chance < 0.5){
             System.out.println("You caught a fish!");
             Consumable fish = new Consumable("AR04.2","fish", "Glistening in the sunlight, the fish serve as another health source for the player, however, they will spoil if taken away from the island.", "healing","island",1,5);
-            player.getInventory().add(fish); //inventory is a List <Item> type
+            player.getInventory().add(fish); //inventory is a List <Model.Item> type
         }else{
             System.out.println("Unsuccessful catch! Try again!");
         }

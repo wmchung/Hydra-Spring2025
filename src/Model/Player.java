@@ -1,34 +1,46 @@
+package Model;
+
+import java.io.FileNotFoundException;
 import java.util.*;
 
-//push for whit
 //Instance variables and attributes
-public class Player extends Character {
+public class Player {
     private Room currentRoom;
-    private List<Item> inventory;
+    private GameMap gameMap;
+    private List<Item> inventory; //inventory
+    private List<String> defeatedEnemies;
+    private List<String> completedPuzzles;
+    private int health; //health
     private Item equippedItem;
-
     private int maxHP;
     private boolean isAlive;
     private boolean hasWon;
-
-    private List<String> defeatedEnemies;
-    private List<String> completedPuzzles;
-
     private int buffAmount; // Temporary attack buff amount
     private Set<String> collectedKey;
     private String currentCheckpoint;
-    private GameMap gameMap;
+    private int attackPower;
+
 
     //constructor to initialize player with a name and starting room
-    public Player(String name, int health, int attackPower, Room startingRoom, GameMap gameMap) {
-        super(name, health, attackPower);
-        this.gameMap = gameMap;
-        this.currentRoom = startingRoom;
+    public Player(String itemsFile, String puzzlesFile, String enemiesFile, String NPCsFile, String roomsFile) throws FileNotFoundException {
+        gameMap = new GameMap(itemsFile, puzzlesFile, enemiesFile, NPCsFile, roomsFile);
+        currentRoom = gameMap.getRoom("SR01");
+        inventory = new ArrayList<>();
+        completedPuzzles = new ArrayList<>();
+        defeatedEnemies = new ArrayList<>();
+        health = 15;
+        attackPower = 5;
     }
 
-
-    //Getters
-
+    public Player() throws FileNotFoundException {
+        gameMap = new GameMap();
+        currentRoom = gameMap.getRoom("SR01");
+        inventory = new ArrayList<>();
+        completedPuzzles = new ArrayList<>();
+        defeatedEnemies = new ArrayList<>();
+        health = 15;
+        attackPower = 5;
+    }
 
     public Room getCurrentRoom() {
 
@@ -45,9 +57,13 @@ public class Player extends Character {
         return equippedItem;
     }
 
-    public int getCurrentHP() {
+    public int getHealth() {
 
         return health;
+    }
+
+    public int getAttackPower() {
+        return attackPower;
     }
 
     public String getCurrentCheckpoint() {
@@ -58,14 +74,6 @@ public class Player extends Character {
         return maxHP;
     }
 
-    //    @Override
-//    public int getAttackPower(String itemName) {
-//
-//        Weapon weapon = (Weapon) equippedItem;
-//        if (equippedItem != null) {//? equippedItem.getAttackPower() : 0;
-//
-//        return baseAttack + boost + buffAmount;
-//    } }
     public void pickUpItem(String itemName) {
         List<Item> items = currentRoom.getItems();
         for (Item item : items) {
@@ -127,50 +135,9 @@ public class Player extends Character {
 
         this.currentRoom = currentRoom;
     }
-    public void move(String direction) {
-        // Map shorthand direction to full direction
-        String fullDirection = gameMap.mapDirection(direction);
-        if (fullDirection == null) {
-            System.out.println("Invalid direction. Use N, E, S, or W.");
-            return;
-        }
-
-        Room currentRoom = this.getCurrentRoom();
-        System.out.println("Debug: Current room: " + currentRoom.getRoomId());
-        System.out.println("Debug: Attempting to move " + fullDirection);
-
-        // Get the next room in the specified direction
-        Room nextRoom = gameMap.getRoomInDirection(currentRoom, fullDirection);
-        if (nextRoom == null) {
-            System.out.println("Debug: No exit in direction " + fullDirection + " from room " + currentRoom.getRoomId());
-            System.out.println("Available exits: " + currentRoom.getExits().keySet());
-            System.out.println("You can't go that way.");
-            return;
-        }
-
-        // Move the player to the next room
-        this.setCurrentRoom(nextRoom);
-        System.out.println("You move " + fullDirection + " to " + nextRoom.getRoomId() + ".");
-        System.out.println(nextRoom.getDescription());
-    }
-
-//    //Method to move player in direction
-//    public void move(String direction, Map<String, Room> rooms) {
-//        if (currentRoom.getExits().containsKey(direction)) {
-//            String nextRoomId = currentRoom.getExits().get(direction);
-//            if (rooms.containsKey(nextRoomId)) {
-//                currentRoom = rooms.get(nextRoomId);
-//                System.out.println("You moved " + direction + " to " + currentRoom.getRoomId());
-//            } else {
-//                System.out.println("Room ID " + nextRoomId + " not found in map.");
-//            }
-//        } else {
-//            System.out.println("No exit in that direction.");
-//        }
-//    }
 
     public boolean isAlive() {
-        return isAlive;
+        return this.health > 0;
     }
 
     public boolean hasWon() {
@@ -200,16 +167,8 @@ public class Player extends Character {
         return collectedKey;
     }
 
-    //method to pickup item form current room
+
     public void pickUpItem(Item itemName) {
-//        if (currentRoom.hasItem(itemName)) { // Prevent adding null/empty items
-//            Item item = (Item) currentRoom.getItems(itemName);
-//            inventory.add(item);
-//            currentRoom.removeItem(itemName);
-//            System.out.println(itemName + " was added to Inventory");
-//        } else {
-//            System.out.println("Item not found in room");
-//        }
         if (currentRoom.getItems().contains(itemName)) { //suggestion
             currentRoom.removeItem(itemName);
             inventory.add(itemName);
@@ -217,43 +176,7 @@ public class Player extends Character {
         } else {
             System.out.println("Item not found in room");
         }
-//        public void pickUpItem(Item itemName) { //suggestion
-//            Item itemToPickUp = null;
-//
-//            // Search the room's items list for a matching item name
-//            for (Item item : currentRoom.getItems()) {
-//                if (item.getItemName().equalsIgnoreCase(itemName)) {
-//                    itemToPickUp = item;
-//                    break;
-//                }
-//            }
-//
-//            if (itemToPickUp != null) {
-//                inventory.add(itemToPickUp);
-//                currentRoom.removeItem(itemToPickUp);
-//                System.out.println(itemName + " was added to Inventory");
-//            } else {
-//                System.out.println("Item not found in room");
-//            }
-//        }
     }
-
-    // Method to remove an item from the player's inventory
-//    public void inspectItem(String itemName) {
-//        for (Item item : inventory) {
-//            if (item.getItemName().equalsIgnoreCase(itemName)) {
-//                System.out.println("Item:" + item.getName());
-//                System.out.println("Description:" + item.getItemDescription());
-//                System.out.println("Attack Boost:" + item.getAttackPower());
-//
-//                return;
-//            }
-//        }
-//
-//        System.out.println("Item not in inventory");
-//
-//    }
-//    //Method to drop item
 
     public void examineItem(Item item) {
         if (inventory.contains(item)) {
@@ -299,7 +222,6 @@ public class Player extends Character {
         }
     }
 
-    @Override
     public void takeDamage(int amount) {
         health -= amount;
         if (health <= 0) {
@@ -310,23 +232,6 @@ public class Player extends Character {
             System.out.println("You were hit and lost " + amount + " HP! Current HP: " + health);
         }
     }
-
-
-    //method to equip or unequip items
-//    public void equipItem(String itemName) {
-//        for (Item item : inventory) {
-//            if (item.getItemName().equalsIgnoreCase(itemName) && item.getAttackPower() > 0) {
-//                if (equippedItem != null) {
-//                    equippedItem.setEquipped(false);
-//                }
-//                equippedItem = item;
-//                item.setEquipped(true);
-//                System.out.println(item.getItemName() + " equipped. Attack boosted by " + item.getAttackPower());
-//                return;
-//            }
-//        }
-//        System.out.println("No such weapon item found in inventory.");
-//    }
 
     public void equipItem(String itemName) { //suggestion
         for (Item item : inventory) {
@@ -354,20 +259,6 @@ public class Player extends Character {
         }
     }
 
-
-//    public void heal(String itemName) {
-//        for (Item item : inventory) {
-//            if (item.getItemName().equalsIgnoreCase(itemName) && item.getHealingPoints() > 0) {
-//                health = Math.min(maxHP, health + item.getHealPoints());
-//                System.out.println("You healed " + item.getHealPoints() + " HP. Current HP: " + health);
-//                inventory.remove(item);
-//                return;
-//            }
-//        }
-//        System.out.println("No healing item found in inventory");
-//    }
-
-
     public void heal(String itemName) {
         for (Item item : inventory) {
             if (item instanceof Consumable) {
@@ -384,10 +275,15 @@ public class Player extends Character {
         System.out.println("No healing item found in inventory.");
     }
 
-    public void handleMovement(String command, GameMap gameMap) {
+    public void handleMovement(String command) {
+        if (command == null || command.isEmpty()) {
+            System.out.println("Invalid direction.");
+            return;
+        }
+
         String direction = gameMap.mapDirection(command);
         if (direction == null) {
-            System.out.println("Invalid direction.");
+            System.out.println("Invalid direction. Use N, E, S, W or full directions.");
             return;
         }
 
@@ -397,38 +293,10 @@ public class Player extends Character {
             nextRoom.checkVisitedRoom();
             nextRoom.hasPuzzle();
         } else {
-            System.out.println("Debug: No exit in direction " + direction + " from room " + this.currentRoom.getRoomId());
-            System.out.println("Available exits: " + this.currentRoom.getExits().keySet());
             System.out.println("You can't go that way.");
+            System.out.println("Available exits: " + this.currentRoom.getExits().keySet());
         }
     }
-
-//    public void handleMovement(String command, GameMap gameMap) {
-//        String direction = gameMap.mapDirection(command);
-//        if (direction == null) {
-//            System.out.println("Invalid direction.");
-//            return;
-//        }
-//        Room nextRoom = gameMap.getRoomInDirection(this.currentRoom, direction);
-//        if (nextRoom != null && !nextRoom.isLocked()) {
-//            this.setCurrentRoom(nextRoom);
-//            nextRoom.checkVisitedRoom();
-//            nextRoom.hasPuzzle();
-//        } else {
-//            System.out.println("You can't go that way.");
-//        }
-//    }
-//    public void handleMovement(String command, GameMap gameMap) {
-//        String direction = gameMap.mapDirection(command);
-//        Room nextRoom = gameMap.getRoomInDirection(this.currentRoom, direction);
-//        if (nextRoom != null && !nextRoom.isLocked()) {
-//            this.setCurrentRoom(nextRoom);
-//            nextRoom.checkVisitedRoom();
-//            nextRoom.hasPuzzle();
-//        } else {
-//            System.out.println("You can't go that way");
-//        }
-//    }
 
     public void talkToNPC(String npcId) {
         if (currentRoom.hasNPC()) {
@@ -441,10 +309,6 @@ public class Player extends Character {
         } else {
             System.out.println("No NPCs in this room.");
         }
-    }
-
-    public void run() {
-
     }
 
 
@@ -466,19 +330,21 @@ public class Player extends Character {
         }
 
         if (!currentRoom.getPuzzles().isEmpty()) {
-            System.out.println("There seems to be a puzzle here.");
+            System.out.println("There seems to be a puzzle here." );
+            for (Puzzle puzzle : currentRoom.getPuzzles()) {
+                System.out.println("Puzzle ID: " + puzzle.getPuzzleId());
+                System.out.println(puzzle.getDescription());
+            }
+            System.out.println();
         }
 
         if (!currentRoom.getNpcs().isEmpty()) {
             System.out.println("You notice:");
             for (NPC npc : currentRoom.getNpcs()) {
-                System.out.println("- " + npc.getNpcId());
+                System.out.println("NPC ID: " + npc.getNpcId());
+                System.out.println("- " + npc.getDescription());
             }
         }
-    }
-
-    public void setName(String playerName) {
-        this.name = playerName;
     }
 
     public void setHealth(int health) {

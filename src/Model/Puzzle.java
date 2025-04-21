@@ -1,3 +1,5 @@
+package Model;
+
 public class Puzzle {
     private String area;
     private String puzzleId;

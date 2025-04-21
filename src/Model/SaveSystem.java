@@ -1,3 +1,5 @@
+package Model;
+
 import java.io.*;
 import java.util.*;
 
@@ -8,7 +10,7 @@ public class SaveSystem {
     public void saveGame(List<Room> rooms, List<Item> items, List<Enemy> enemies, Player player) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(SAVE_FILE))) {
             writer.write("Player\n");
-            writer.write(player.getName() + "~" + player.getHealth() + "~" + player.getCurrentCheckpoint() + "\n");
+            writer.write(player.getHealth() + "~" + player.getCurrentCheckpoint() + "\n");
 
             writer.write("Rooms\n");
             for (Room room : rooms) {
@@ -53,9 +55,8 @@ public class SaveSystem {
             while ((line = reader.readLine()) != null) {
                 if (line.equals("Player")) {
                     String[] playerData = reader.readLine().split("~");
-                    player.setName(playerData[0]);
-                    player.setHealth(Integer.parseInt(playerData[1]));
-                    player.setCurrentCheckpoint(playerData[2]);
+                    player.setHealth(Integer.parseInt(playerData[0]));
+                    player.setCurrentCheckpoint(playerData[1]);
                 } else if (line.equals("Rooms")) {
                     while (!(line = reader.readLine()).equals("Items")) {
                         if (line.startsWith("Puzzle")) {
@@ -71,8 +72,7 @@ public class SaveSystem {
                         } else {
                             String[] roomData = line.split("~");
                             currentRoom = new Room(roomData[0], roomData[1], roomData[2], roomData[3]);
-                            gameMap.rooms.add(currentRoom);
-                        }
+                            gameMap.rooms.put(currentRoom.getRoomId(), currentRoom);                        }
                     }
                 } else if (line.equals("Items")) {
                     while (!(line = reader.readLine()).equals("Enemies")) {
