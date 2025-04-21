@@ -275,14 +275,39 @@ public class GameController {
         }
     }
 
-    public void help (){
-        //final boss room
+    public void help() {
+        Room currentRoom = player.getCurrentRoom();
+        String roomId = currentRoom.getRoomId();
 
-        //show puzzle status
-        for(Puzzle puzzle : room.getPuzzles()){
-            String status = puzzle.isPuzzleSolved()? "Solved!" : "Not solved.";
-            System.out.println("- Puzzle in Room '" + puzzle.getPuzzleRoomId() + "': " + status);
+        System.out.println("\n=== HELP MENU ===");
+        System.out.println("Current Room: " + roomId + " - " + currentRoom.getRoomType());
+        System.out.println(currentRoom.getDescription());
+
+        // Final boss room context
+        if (roomId.equals("BR-E01")) {
+            System.out.println("\n⚔You are in the Final Boss Arena!");
+            System.out.println("Defeat the boss to complete your journey.");
+            System.out.println("Make sure you are equipped with your best weapon and fully healed.");
         }
+
+        // Puzzle status (in current room)
+        if (currentRoom.getPuzzles().isEmpty()) {
+            System.out.println("\nNo puzzles in this room.");
+        } else {
+            System.out.println("\nPuzzle Status:");
+            for (Puzzle puzzle : currentRoom.getPuzzles()) {
+                String status = puzzle.isPuzzleSolved() ? "Solved!" : "Not solved.";
+                System.out.println("- Puzzle in Room '" + puzzle.getPuzzleRoomId() + "': " + status);
+            }
+        }
+
+        // Optional: equipped item + health
+        System.out.println("\nPlayer Status:");
+        System.out.println("- Health: " + player.getHealth());
+        Item equipped = player.getEquippedItem();
+        System.out.println("- Equipped Item: " + (equipped != null ? equipped.getItemName() : "None"));
+
+        System.out.println("=======================");
     }
 
 }
